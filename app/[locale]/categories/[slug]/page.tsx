@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { localizePath, type Locale } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
-import { getAllSlugs, getCategoryBySlug, getProductsByCategory } from '@/lib/data/public'
+import { getAllSlugs, toSlugParams, getCategoryBySlug, getProductsByCategory } from '@/lib/data/public'
 import { pick, toLocaleDigits } from '@/lib/format'
 import { jsonLd, pageAlternates } from '@/lib/seo'
 import { absoluteUrl } from '@/lib/utils'
@@ -16,7 +16,7 @@ type Props = PageProps<'/[locale]/categories/[slug]'>
 
 export async function generateStaticParams() {
   const { categories } = await getAllSlugs()
-  return categories.map((slug) => ({ slug }))
+  return toSlugParams(categories)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

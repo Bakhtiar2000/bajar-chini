@@ -92,3 +92,13 @@ export async function getAllSlugs() {
   cacheTag(TAGS.products, TAGS.categories, TAGS.articles)
   return q.queryAllSlugs()
 }
+
+/**
+ * Cache Components requires generateStaticParams to return at least one entry.
+ * When the database has no rows yet (e.g. fresh deploy before seeding), fall back
+ * to a placeholder slug — the pages call notFound() for it, and real slugs are
+ * still rendered on demand.
+ */
+export function toSlugParams(slugs: string[]): { slug: string }[] {
+  return slugs.length > 0 ? slugs.map((slug) => ({ slug })) : [{ slug: '__placeholder__' }]
+}

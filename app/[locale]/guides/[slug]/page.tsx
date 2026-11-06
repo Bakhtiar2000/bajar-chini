@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { localizePath, type Locale } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
-import { getAllSlugs, getArticleBySlug } from '@/lib/data/public'
+import { getAllSlugs, toSlugParams, getArticleBySlug } from '@/lib/data/public'
 import { formatDate, pick } from '@/lib/format'
 import { jsonLd, pageAlternates } from '@/lib/seo'
 import { absoluteUrl } from '@/lib/utils'
@@ -18,7 +18,7 @@ type Props = PageProps<'/[locale]/guides/[slug]'>
 
 export async function generateStaticParams() {
   const { articles } = await getAllSlugs()
-  return articles.map((slug) => ({ slug }))
+  return toSlugParams(articles)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

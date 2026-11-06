@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import { CalendarRange, CircleCheck, Lightbulb, ScanSearch, TriangleAlert } from 'lucide-react'
 import { localizePath, type Locale } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
-import { getAllSlugs, getProductDetail } from '@/lib/data/public'
+import { getAllSlugs, toSlugParams, getProductDetail } from '@/lib/data/public'
 import { monthName, pick, pickList } from '@/lib/format'
 import { jsonLd, pageAlternates } from '@/lib/seo'
 import { absoluteUrl } from '@/lib/utils'
@@ -19,7 +19,7 @@ type Props = PageProps<'/[locale]/products/[slug]'>
 
 export async function generateStaticParams() {
   const { products } = await getAllSlugs()
-  return products.map((slug) => ({ slug }))
+  return toSlugParams(products)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
