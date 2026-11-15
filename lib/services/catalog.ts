@@ -6,7 +6,8 @@ import { ApiError, notFoundError } from '@/lib/api/response'
 import { invalidate } from '@/lib/revalidate'
 import { TAGS } from '@/lib/cache-tags'
 import { unitFromKey } from '@/lib/units'
-import { normalizeSearch } from '@/lib/utils'
+import { searchableText } from '@/lib/search/engine'
+import { SLUG_ALIASES } from '@/lib/search/aliases'
 import type {
   ArticleInput,
   CategoryInput,
@@ -19,17 +20,16 @@ export function buildSearchText(p: {
   alternativeNames?: { bn?: string[]; en?: string[] }
   slug?: string
 }) {
-  return normalizeSearch(
-    [
-      p.name?.bn,
-      p.name?.en,
-      ...(p.alternativeNames?.bn ?? []),
-      ...(p.alternativeNames?.en ?? []),
-      p.slug?.replace(/-/g, ' '),
-    ]
-      .filter(Boolean)
-      .join(' | '),
-  )
+  // Raw names plus their phonetic (Banglish) keys, so the admin product filter
+  // finds "piyaj" or "aam" as well as পেঁয়াজ / Mango.
+  return searchableText([
+    p.name?.bn,
+    p.name?.en,
+    ...(p.alternativeNames?.bn ?? []),
+    ...(p.alternativeNames?.en ?? []),
+    p.slug?.replace(/-/g, ' '),
+    ...(p.slug ? (SLUG_ALIASES[p.slug] ?? []) : []),
+  ])
 }
 
 // ---------------- Categories ----------------

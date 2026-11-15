@@ -4,6 +4,8 @@ import { Types } from 'mongoose'
 import { connectDB } from '@/lib/db/connect'
 import { Article, Category, Market, PriceRecord, Product } from '@/lib/models'
 import { notFoundError } from '@/lib/api/response'
+import { phoneticKey } from '@/lib/search/phonetic'
+import { escapeRegex } from '@/lib/utils'
 import {
   loc,
   locList,
@@ -76,8 +78,14 @@ export async function adminListProducts(opts: {
   const filter: Record<string, unknown> = {}
   if (opts.categoryId) filter.categoryId = new Types.ObjectId(opts.categoryId)
   if (opts.q) {
-    const rx = new RegExp(opts.q.normalize('NFC').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
-    filter.$or = [{ searchText: rx }, { slug: rx }]
+    const rx = new RegExp(escapeRegex(opts.q.normalize('NFC').toLowerCase()), 'i')
+    // searchText also stores phonetic keys, so Banglish (piyaj, aam) finds products too.
+    const key = phoneticKey(opts.q)
+    filter.$or = [
+      { searchText: rx },
+      { slug: rx },
+      ...(key ? [{ searchText: new RegExp(escapeRegex(key), 'i') }] : []),
+    ]
   }
   const [total, docs, cats] = await Promise.all([
     Product.countDocuments(filter),

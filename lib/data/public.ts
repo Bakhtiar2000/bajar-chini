@@ -86,6 +86,20 @@ export async function getArticleBySlug(slug: string) {
   return q.queryArticleBySlug(slug)
 }
 
+export async function getPriceMovers() {
+  'use cache'
+  cacheLife('hours')
+  cacheTag(TAGS.prices, TAGS.products, TAGS.markets)
+  return q.queryPriceMovers()
+}
+
+export async function getSearchCorpus() {
+  'use cache'
+  cacheLife('hours')
+  cacheTag(TAGS.products, TAGS.categories)
+  return q.querySearchCorpus()
+}
+
 export async function getAllSlugs() {
   'use cache'
   cacheLife('hours')
@@ -101,4 +115,11 @@ export async function getAllSlugs() {
  */
 export function toSlugParams(slugs: string[]): { slug: string }[] {
   return slugs.length > 0 ? slugs.map((slug) => ({ slug })) : [{ slug: '__placeholder__' }]
+}
+
+export async function getOpenData(filter: { market?: string; year?: number; month?: number }) {
+  'use cache'
+  cacheLife('hours')
+  cacheTag(TAGS.prices, TAGS.products, TAGS.markets, TAGS.categories)
+  return q.queryOpenData(filter)
 }

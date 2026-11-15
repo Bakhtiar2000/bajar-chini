@@ -4,7 +4,8 @@ const AdminUserSchema = new Schema(
   {
     username: { type: String, required: true, unique: true, lowercase: true, trim: true },
     passwordHash: { type: String, required: true },
-    role: { type: String, enum: ['admin'], default: 'admin' },
+    role: { type: String, enum: ['admin', 'editor', 'collector'], default: 'admin' },
+    isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date, default: null },
   },
   { timestamps: true },

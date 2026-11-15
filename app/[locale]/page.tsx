@@ -4,12 +4,15 @@ import { BadgeCheck, ChartLine, ScanSearch } from 'lucide-react'
 import { localizePath } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
 import {
+  getAllProductCards,
   getArticles,
   getCategories,
   getDefaultMarket,
   getFeaturedProducts,
   getPopularPriceProducts,
+  getPriceMovers,
 } from '@/lib/data/public'
+import { PriceMovers } from '@/components/site/price-movers'
 import { Button } from '@/components/ui/button'
 import { SearchBox } from '@/components/site/search-box'
 import { SectionHeading } from '@/components/site/section-heading'
@@ -25,13 +28,16 @@ const HERO_IMAGE = 'https://images.unsplash.com/photo-1488459716781-31db52582fe9
 export default async function HomePage() {
   const locale = await getLocale()
   const t = getT(locale)
-  const [categories, featured, priceProducts, market, articles] = await Promise.all([
-    getCategories(),
-    getFeaturedProducts(8),
-    getPopularPriceProducts(8),
-    getDefaultMarket(),
-    getArticles(4),
-  ])
+  const [categories, featured, priceProducts, market, articles, movers, allCards] =
+    await Promise.all([
+      getCategories(),
+      getFeaturedProducts(8),
+      getPopularPriceProducts(8),
+      getDefaultMarket(),
+      getArticles(4),
+      getPriceMovers(),
+      getAllProductCards(),
+    ])
   const pricedProducts = priceProducts.filter((p) => p.latestPrice)
   const hasDemo = pricedProducts.some((p) => p.latestPrice?.isDemo)
 
@@ -171,6 +177,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Biggest month-on-month price changes */}
+      <PriceMovers movers={movers} cards={allCards} market={market} locale={locale} />
 
       {/* Guides */}
       {articles.length ? (

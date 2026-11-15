@@ -149,6 +149,8 @@ export const bulkSaveSchema = z.object({
     .enum(['MANUAL_OBSERVATION', 'OFFICIAL_SOURCE', 'CONTRIBUTOR_SUBMISSION'])
     .default('MANUAL_OBSERVATION'),
   sourceDescription: text(500).optional(),
+  /** Where the rows came from, recorded in the audit log. */
+  source: z.enum(['editor', 'csv-import']).default('editor'),
   // Validated per entry on the server so valid rows still save when others are invalid.
   entries: z.array(z.unknown()).min(1, 'Nothing to save').max(1000),
 })

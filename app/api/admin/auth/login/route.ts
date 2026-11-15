@@ -21,8 +21,12 @@ export async function POST(req: NextRequest) {
       return fail(401, 'INVALID_CREDENTIALS', 'Invalid username or password')
     }
     clearAttempts(ip)
-    const token = await createSessionToken({ sub: user.id, username: user.username, role: 'admin' })
-    const res = NextResponse.json({ data: { username: user.username } })
+    const token = await createSessionToken({
+      sub: user.id,
+      username: user.username,
+      role: user.role,
+    })
+    const res = NextResponse.json({ data: { username: user.username, role: user.role } })
     res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions)
     return res
   } catch (error) {

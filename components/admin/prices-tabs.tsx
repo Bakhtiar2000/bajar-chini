@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ChartLine, History } from 'lucide-react'
 import type { MarketDTO } from '@/lib/types'
+import type { Role } from '@/lib/auth/roles'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/controls'
 import { PriceEditor } from './price-editor'
 import { PriceHistory } from './price-history'
@@ -12,11 +13,13 @@ export function PricesTabs({
   now,
   initialTab,
   initialMarketId,
+  role,
 }: {
   markets: MarketDTO[]
   now: { year: number; month: number }
   initialTab: 'entry' | 'history'
   initialMarketId?: string
+  role: Role
 }) {
   const [tab, setTab] = useState(initialTab)
   return (
@@ -30,10 +33,10 @@ export function PricesTabs({
         </TabsTrigger>
       </TabsList>
       <TabsContent value="entry">
-        <PriceEditor markets={markets} now={now} />
+        <PriceEditor markets={markets} now={now} role={role} />
       </TabsContent>
       <TabsContent value="history">
-        <PriceHistory markets={markets} initialMarketId={initialMarketId} />
+        <PriceHistory markets={markets} initialMarketId={initialMarketId} role={role} />
       </TabsContent>
     </Tabs>
   )

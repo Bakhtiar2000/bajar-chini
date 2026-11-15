@@ -20,6 +20,12 @@ const LINKS = [
   { key: 'about', path: '/about' },
 ] as const
 
+/** Personal tools, shown in the mobile menu. */
+const TOOL_LINKS = [
+  { key: 'list', path: '/list' },
+  { key: 'watchlist', path: '/watchlist' },
+] as const
+
 function isActive(current: string, path: string) {
   if (path === '/') return current === '/'
   if (path === '/products')
@@ -77,6 +83,24 @@ export function MobileNav() {
         <SearchBox variant="page" onNavigate={() => setOpen(false)} />
         <nav aria-label="Mobile" className="flex flex-col gap-1">
           {LINKS.map((l) => {
+            const active = isActive(current, l.path)
+            return (
+              <Link
+                key={l.key}
+                href={localizePath(locale, l.path)}
+                onClick={() => setOpen(false)}
+                aria-current={active ? 'page' : undefined}
+                className={cn(
+                  'rounded-lg px-3 py-3 text-base font-medium',
+                  active ? 'bg-soft-green text-brand-dark' : 'text-ink hover:bg-soft-green',
+                )}
+              >
+                {t(`nav.${l.key}`)}
+              </Link>
+            )
+          })}
+          <hr className="border-border my-2" />
+          {TOOL_LINKS.map((l) => {
             const active = isActive(current, l.path)
             return (
               <Link

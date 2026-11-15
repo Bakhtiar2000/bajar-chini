@@ -8,7 +8,11 @@ import { AdminShell } from '@/components/admin/shell'
 async function Guard({ children }: { children: React.ReactNode }) {
   const session = await getAdminSession()
   if (!session) redirect('/admin/login')
-  return <AdminShell username={session.username}>{children}</AdminShell>
+  return (
+    <AdminShell username={session.username} role={session.role}>
+      {children}
+    </AdminShell>
+  )
 }
 
 export default function PanelLayout({ children }: LayoutProps<'/admin'>) {

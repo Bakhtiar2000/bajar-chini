@@ -16,6 +16,9 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
     { label: t('nav.products'), href: '/products' },
     { label: t('nav.prices'), href: '/prices' },
     { label: t('nav.tips'), href: '/guides' },
+    { label: t('nav.list'), href: '/list' },
+    { label: t('nav.watchlist'), href: '/watchlist' },
+    { label: t('nav.openData'), href: '/data' },
     { label: t('nav.about'), href: '/about' },
   ]
 

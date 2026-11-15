@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import {
   ChartLine,
+  ClipboardList,
   ExternalLink,
   FileText,
   LayoutDashboard,
@@ -13,53 +14,61 @@ import {
   Package,
   Store,
   Tags,
+  Users,
 } from 'lucide-react'
+import { can, ROLE_LABELS, type Permission, type Role } from '@/lib/auth/roles'
 import { LogoMark } from '@/components/site/logo'
 import { Dialog, DialogTitle, SheetContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { api } from '@/lib/client-api'
 
-const NAV = [
+const NAV: { href: string; label: string; icon: typeof ChartLine; permission?: Permission }[] = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/prices', label: 'Monthly prices', icon: ChartLine },
-  { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/categories', label: 'Categories', icon: Tags },
-  { href: '/admin/markets', label: 'Markets', icon: Store },
-  { href: '/admin/articles', label: 'Articles', icon: FileText },
+  { href: '/admin/products', label: 'Products', icon: Package, permission: 'catalog:write' },
+  { href: '/admin/categories', label: 'Categories', icon: Tags, permission: 'catalog:write' },
+  { href: '/admin/markets', label: 'Markets', icon: Store, permission: 'catalog:write' },
+  { href: '/admin/articles', label: 'Articles', icon: FileText, permission: 'catalog:write' },
+  { href: '/admin/audit', label: 'Audit log', icon: ClipboardList, permission: 'audit:view' },
+  { href: '/admin/users', label: 'Users', icon: Users, permission: 'users:manage' },
 ]
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({ onNavigate, role }: { onNavigate?: () => void; role: Role }) {
   const pathname = usePathname()
   return (
     <nav className="flex flex-col gap-1" aria-label="Admin">
-      {NAV.map(({ href, label, icon: Icon }) => {
-        const active = pathname.startsWith(href)
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={onNavigate}
-            aria-current={active ? 'page' : undefined}
-            className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-              active
-                ? 'bg-white/15 text-white'
-                : 'text-green-100 hover:bg-white/10 hover:text-white',
-            )}
-          >
-            <Icon className="size-4" /> {label}
-          </Link>
-        )
-      })}
+      {NAV.filter((n) => !n.permission || can(role, n.permission)).map(
+        ({ href, label, icon: Icon }) => {
+          const active = pathname.startsWith(href)
+          return (
+            <Link
+              key={href}
+              href={href}
+              onClick={onNavigate}
+              aria-current={active ? 'page' : undefined}
+              className={cn(
+                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                active
+                  ? 'bg-white/15 text-white'
+                  : 'text-green-100 hover:bg-white/10 hover:text-white',
+              )}
+            >
+              <Icon className="size-4" /> {label}
+            </Link>
+          )
+        },
+      )}
     </nav>
   )
 }
 
 export function AdminShell({
   username,
+  role,
   children,
 }: {
   username: string
+  role: Role
   children: React.ReactNode
 }) {
   const router = useRouter()
@@ -81,7 +90,9 @@ export function AdminShell({
       >
         <ExternalLink className="size-4" /> View site
       </a>
-      <p className="px-3 text-xs text-green-200/70">Signed in as {username}</p>
+      <p className="px-3 text-xs text-green-200/70">
+        Signed in as {username} · {ROLE_LABELS[role]}
+      </p>
       <button
         type="button"
         onClick={logout}
@@ -99,7 +110,7 @@ export function AdminShell({
           <LogoMark className="size-8" />
           <span className="font-bold text-white">Bajarchini Admin</span>
         </Link>
-        <NavLinks />
+        <NavLinks role={role} />
         {footer}
       </aside>
 
@@ -123,7 +134,7 @@ export function AdminShell({
             aria-describedby={undefined}
           >
             <DialogTitle className="text-white">Bajarchini Admin</DialogTitle>
-            <NavLinks onNavigate={() => setOpen(false)} />
+            <NavLinks onNavigate={() => setOpen(false)} role={role} />
             {footer}
           </SheetContent>
         </Dialog>

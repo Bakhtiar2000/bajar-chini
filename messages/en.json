@@ -25,7 +25,10 @@
     "search": "Search",
     "language": "Language",
     "switchLanguage": "বাংলা",
-    "switchLanguageLabel": "বাংলায় দেখুন"
+    "switchLanguageLabel": "বাংলায় দেখুন",
+    "list": "Bajar list",
+    "watchlist": "Watchlist",
+    "openData": "Open data"
   },
   "home": {
     "heroBadge": "Your trusted market companion",
@@ -197,5 +200,124 @@
   },
   "categoryPage": {
     "productsHeading": "Products in this category"
+  },
+  "tools": {
+    "fair": {
+      "title": "Is this a fair price?",
+      "subtitle": "Enter the price the seller asked and compare it with the latest observed range.",
+      "label": "Seller's price (৳ per {unit})",
+      "placeholder": "e.g. 350",
+      "check": "Check",
+      "below": "Below the observed range — check the quality carefully.",
+      "fair": "Within the observed range — a fair price.",
+      "slightlyHigh": "A little above the observed range — try bargaining.",
+      "high": "Well above the observed range — compare with other shops.",
+      "detail": "{percent} compared with the reference price ({ref})",
+      "basedOn": "Compared with {market}, {month}",
+      "noPrice": "No observed price yet, so we can't compare."
+    },
+    "compare": {
+      "title": "Compare markets",
+      "subtitle": "The latest observed price of this product in each market",
+      "market": "Market",
+      "range": "Price range",
+      "reference": "Reference",
+      "month": "Observed",
+      "lowest": "Lowest",
+      "selected": "Showing"
+    },
+    "season": {
+      "bestTime": "Best time to buy",
+      "cheapest": "Usually cheapest in",
+      "dearest": "Usually dearest in",
+      "swing": "Prices swing about {percent} through the year.",
+      "basedOn": "Based on {count} months of observed prices at {market}.",
+      "notEnough": "Not enough months of price data yet to show a seasonal pattern.",
+      "average": "Average reference price by month",
+      "steady": "Prices stay fairly steady through the year — no strong cheap season."
+    },
+    "checklist": {
+      "title": "Check as you shop",
+      "hint": "Tick each sign you can see on the product in front of you.",
+      "progress": "{done} of {total} good signs checked",
+      "warnProgress": "{count} warning signs spotted",
+      "verdictGood": "Looks good — most quality signs are present.",
+      "verdictWarn": "Be careful — you spotted warning signs.",
+      "reset": "Reset"
+    },
+    "list": {
+      "title": "My bajar list",
+      "subtitle": "Plan your shopping and estimate the cost from the latest observed prices.",
+      "add": "Add to bajar list",
+      "added": "In bajar list",
+      "addedToast": "Added to your bajar list",
+      "empty": "Your bajar list is empty.",
+      "emptyHint": "Open any product and tap “Add to bajar list”.",
+      "browse": "Browse products",
+      "quantity": "Quantity",
+      "estimate": "Estimate",
+      "total": "Estimated total",
+      "totalHint": "The range uses the minimum and maximum observed prices; the middle figure uses the reference price.",
+      "noPriceItems": "{count} item(s) have no observed price and are not included.",
+      "share": "Share list",
+      "copied": "Link copied",
+      "clear": "Clear list",
+      "remove": "Remove",
+      "print": "Print",
+      "sharedTitle": "Someone shared a bajar list with you",
+      "useShared": "Use this list",
+      "dismiss": "Dismiss",
+      "loading": "Loading prices…",
+      "storageNote": "Your list is saved only in this browser."
+    },
+    "watch": {
+      "title": "My watchlist",
+      "subtitle": "Follow products and see how their prices changed since you started following.",
+      "follow": "Follow price",
+      "following": "Following",
+      "followToast": "You'll see this product's price changes on your watchlist",
+      "empty": "You're not following any products yet.",
+      "emptyHint": "Open a product and tap “Follow price”.",
+      "since": "Since you followed ({month})",
+      "noChange": "No change since you followed",
+      "newMonth": "New price for {month}",
+      "markSeen": "Mark as seen",
+      "unfollow": "Unfollow",
+      "noPriceThen": "No price when you followed",
+      "storageNote": "Your watchlist is saved only in this browser."
+    },
+    "movers": {
+      "title": "Biggest price changes",
+      "subtitle": "Compared with the previous month at {market}",
+      "up": "Prices up",
+      "down": "Prices down",
+      "none": "No month-on-month changes to show yet."
+    },
+    "openData": {
+      "title": "Open price data",
+      "subtitle": "All published monthly price observations, free to download for research and journalism.",
+      "csv": "Download CSV",
+      "json": "Download JSON",
+      "fieldsTitle": "Fields",
+      "apiTitle": "API",
+      "apiText": "The same data is available from the endpoint below. Filter with market (slug), year and month.",
+      "licenseTitle": "Using the data",
+      "licenseText": "Please credit “Bajarchini” and link to this page. Prices are observations at named reference markets, not official or live prices. Rows marked isDemo = true are illustrative demo data and must not be used as real prices.",
+      "fields": {
+        "product": "product slug and names (Bengali and English)",
+        "category": "category slug",
+        "market": "market slug and name",
+        "period": "year and month of observation",
+        "prices": "minimum, maximum and reference price in BDT",
+        "unit": "unit (kg, piece, hali, dozen, bundle)",
+        "observedAt": "observation date (ISO 8601)",
+        "isDemo": "true for illustrative demo data"
+      }
+    },
+    "pwa": {
+      "offlineTitle": "You're offline",
+      "offlineText": "Pages you've opened before are still available. Reconnect to see the latest prices.",
+      "retry": "Try again"
+    }
   }
 }

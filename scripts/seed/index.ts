@@ -17,7 +17,8 @@ import { Market } from '../../lib/models/Market'
 import { PriceRecord } from '../../lib/models/PriceRecord'
 import { Article } from '../../lib/models/Article'
 import { AdminUser } from '../../lib/models/AdminUser'
-import { normalizeSearch } from '../../lib/utils'
+import { searchableText } from '../../lib/search/engine'
+import { SLUG_ALIASES } from '../../lib/search/aliases'
 import { UNITS } from '../../lib/units'
 import { CATEGORIES } from './categories'
 import { PRODUCTS, type SeedProduct } from './products'
@@ -239,15 +240,14 @@ async function main() {
         isFeatured: Boolean(p.featured),
         isPopular: Boolean(p.popular),
         isPublished: true,
-        searchText: normalizeSearch(
-          [
-            name.bn,
-            name.en,
-            ...alternativeNames.bn,
-            ...alternativeNames.en,
-            p.slug.replace(/-/g, ' '),
-          ].join(' | '),
-        ),
+        searchText: searchableText([
+          name.bn,
+          name.en,
+          ...alternativeNames.bn,
+          ...alternativeNames.en,
+          p.slug.replace(/-/g, ' '),
+          ...(SLUG_ALIASES[p.slug] ?? []),
+        ]),
       }
     }),
   )

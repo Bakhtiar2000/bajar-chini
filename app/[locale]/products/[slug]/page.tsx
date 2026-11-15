@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { CalendarRange, CircleCheck, Lightbulb, ScanSearch, TriangleAlert } from 'lucide-react'
+import { CalendarRange, Lightbulb, ScanSearch } from 'lucide-react'
 import { localizePath, type Locale } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
 import { getAllSlugs, toSlugParams, getProductDetail } from '@/lib/data/public'
@@ -14,6 +14,13 @@ import { Breadcrumbs } from '@/components/site/page-header'
 import { Gallery } from '@/components/site/gallery'
 import { PriceSection } from '@/components/site/price-section'
 import { ProductCard, ProductGrid } from '@/components/site/product-card'
+import {
+  BestTimeToBuy,
+  FairPriceChecker,
+  MarketComparison,
+  ProductActions,
+  QualityChecklist,
+} from '@/components/site/product-tools'
 
 type Props = PageProps<'/[locale]/products/[slug]'>
 
@@ -31,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const other = locale === 'bn' ? 'en' : 'bn'
   const title = `${pick(product.name, locale)} (${product.name[other]}) — ${t('product.identifyTitle').replace('?', '')}`
   const description = pick(product.shortDescription, locale)
+  const ogImage = absoluteUrl(`/api/og/products/${slug}`)
   return {
     title,
     description,
@@ -39,8 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'article',
-      images: product.image ? [product.image] : [],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: product.name.en }],
     },
+    twitter: { card: 'summary_large_image', title, description, images: [ogImage] },
   }
 }
 
@@ -53,6 +62,7 @@ const SECTION_IDS = {
   history: 'history',
   tips: 'tips',
   season: 'season',
+  fair: 'fair-price',
 }
 
 function Paragraphs({ text }: { text: string }) {
@@ -68,9 +78,9 @@ function Paragraphs({ text }: { text: string }) {
   )
 }
 
-function CheckList({ items, tone }: { items: string[]; tone: 'good' | 'warn' | 'tip' }) {
-  const Icon = tone === 'good' ? CircleCheck : tone === 'warn' ? TriangleAlert : Lightbulb
-  const color = tone === 'good' ? 'text-brand' : tone === 'warn' ? 'text-amber-600' : 'text-orange'
+function TipList({ items }: { items: string[] }) {
+  const Icon = Lightbulb
+  const color = 'text-orange'
   return (
     <ul className="grid gap-3 md:grid-cols-2">
       {items.map((item, i) => (
@@ -99,6 +109,7 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
   const ident = pick(product.identificationGuide, locale)
   const season = pick(product.seasonalInformation, locale)
   const categoryHref = localizePath(locale, `/categories/${product.category.slug}`)
+  const latest = product.priceHistories[0]?.latest ?? null
 
   const toc = [
     { id: SECTION_IDS.identify, label: t('product.identifyTitle') },
@@ -120,6 +131,24 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
       category: pick(product.category.name, locale),
       image: product.images.map((i) => i.url),
       url: absoluteUrl(localizePath(locale, `/products/${product.slug}`)),
+      ...(latest
+        ? {
+            offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: 'BDT',
+              lowPrice: latest.minimumPrice,
+              highPrice: latest.maximumPrice,
+              offerCount: product.priceHistories.filter((h) => h.latest).length,
+              priceSpecification: {
+                '@type': 'UnitPriceSpecification',
+                price: latest.referencePrice,
+                priceCurrency: 'BDT',
+                unitText: latest.unit.en,
+                validFrom: latest.observedAt,
+              },
+            },
+          }
+        : {}),
     },
     {
       '@context': 'https://schema.org',
@@ -192,6 +221,7 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
             <p className="text-ink text-lg leading-relaxed">
               {pick(product.shortDescription, locale)}
             </p>
+            <ProductActions slug={product.slug} latest={latest} />
             {pick(product.description, locale) ? (
               <Paragraphs text={pick(product.description, locale)} />
             ) : null}
@@ -236,32 +266,16 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
           </div>
         </section>
 
-        {/* C. Good quality */}
-        <section id={SECTION_IDS.quality} aria-labelledby="quality-h" className="scroll-mt-24">
-          <h2 id="quality-h" className="text-ink mb-4 flex items-center gap-2 text-2xl font-bold">
-            <CircleCheck className="text-brand size-6" aria-hidden />
-            {t('product.goodQualityTitle')}
-          </h2>
-          {good.length ? (
-            <CheckList items={good} tone="good" />
-          ) : (
-            <p className="text-ink-muted">{t('product.notAvailable')}</p>
-          )}
-        </section>
-
-        {/* D. Warning signs */}
-        <section id={SECTION_IDS.warning} aria-labelledby="warning-h" className="scroll-mt-24">
-          <h2 id="warning-h" className="text-ink mb-4 flex items-center gap-2 text-2xl font-bold">
-            <TriangleAlert className="size-6 text-amber-600" aria-hidden />
-            {t('product.warningTitle')}
-          </h2>
-          {warn.length ? (
-            <CheckList items={warn} tone="warn" />
-          ) : (
-            <p className="text-ink-muted">{t('product.notAvailable')}</p>
-          )}
-          <p className="text-ink-muted mt-3 text-sm">{t('product.warningNote')}</p>
-        </section>
+        {/* C + D. Good quality / warning signs (tick as you shop) */}
+        <QualityChecklist
+          good={good}
+          warn={warn}
+          goodTitle={t('product.goodQualityTitle')}
+          warnTitle={t('product.warningTitle')}
+          notAvailable={t('product.notAvailable')}
+          warnNote={t('product.warningNote')}
+          ids={{ quality: SECTION_IDS.quality, warning: SECTION_IDS.warning }}
+        />
 
         {/* E–H. Prices */}
         <PriceSection
@@ -274,6 +288,18 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
           }}
         />
 
+        {/* Shopper tools: fair price check + market comparison */}
+        {product.priceHistories.length ? (
+          <section
+            id={SECTION_IDS.fair}
+            aria-label={t('price.monthlyTitle')}
+            className="scroll-mt-24 space-y-6"
+          >
+            <FairPriceChecker histories={product.priceHistories} />
+            <MarketComparison histories={product.priceHistories} />
+          </section>
+        ) : null}
+
         {/* I. Buying tips */}
         <section id={SECTION_IDS.tips} aria-labelledby="tips-h" className="scroll-mt-24">
           <h2 id="tips-h" className="text-ink mb-4 flex items-center gap-2 text-2xl font-bold">
@@ -281,7 +307,7 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
             {t('product.buyingTipsTitle')}
           </h2>
           {tips.length ? (
-            <CheckList items={tips} tone="tip" />
+            <TipList items={tips} />
           ) : (
             <p className="text-ink-muted">{t('product.notAvailable')}</p>
           )}
@@ -318,6 +344,11 @@ async function ProductContent({ params, locale }: { params: Props['params']; loc
             ) : (
               <p className="text-ink-muted text-sm">{t('common.yearRound')}</p>
             )}
+            {product.priceHistories.length ? (
+              <div className="border-border border-t pt-4">
+                <BestTimeToBuy histories={product.priceHistories} />
+              </div>
+            ) : null}
           </div>
         </section>
 

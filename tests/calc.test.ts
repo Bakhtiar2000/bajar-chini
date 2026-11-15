@@ -86,3 +86,64 @@ test('unusual change threshold', () => {
   assert.equal(isUnusualChange(100, 120), false)
   assert.equal(isUnusualChange(0, 50), false)
 })
+
+test('seasonal insight finds cheapest and dearest calendar months', async () => {
+  const { seasonalInsight } = await import('../lib/prices/calc')
+  const records = [
+    rec(2025, 12, 90, 110), // 100
+    rec(2026, 1, 80, 100), // 90
+    rec(2026, 2, 60, 80), // 70  ← cheapest
+    rec(2026, 3, 70, 74), // 72  (within 5%)
+    rec(2026, 6, 140, 160), // 150 ← dearest
+    rec(2025, 6, 130, 150), // June averaged with 2026: (140+150)/2 = 145
+  ]
+  const s = seasonalInsight(records)
+  assert.deepEqual(s.cheapestMonths, [2, 3]) // 70 and 72 (within 3%)
+  assert.equal(s.steady, false)
+  assert.deepEqual(s.dearestMonths, [6])
+  assert.equal(s.months[5].average, 145)
+  assert.equal(s.months[5].observations, 2)
+  assert.equal(s.months[3].average, null) // April missing, not interpolated
+  assert.equal(s.swingPercent, round(((145 - 70) / 70) * 100))
+})
+
+test('seasonal insight needs enough months', async () => {
+  const { seasonalInsight } = await import('../lib/prices/calc')
+  const s = seasonalInsight([rec(2026, 1, 10, 20), rec(2026, 2, 10, 20)])
+  assert.deepEqual(s.cheapestMonths, [])
+  assert.equal(s.swingPercent, null)
+})
+
+test('fair price verdict', async () => {
+  const { fairPriceVerdict } = await import('../lib/prices/calc')
+  assert.equal(fairPriceVerdict(290, 300, 380).verdict, 'below')
+  assert.equal(fairPriceVerdict(300, 300, 380).verdict, 'fair')
+  assert.equal(fairPriceVerdict(380, 300, 380).verdict, 'fair')
+  assert.equal(fairPriceVerdict(410, 300, 380).verdict, 'slightly-high')
+  assert.equal(fairPriceVerdict(420, 300, 380).verdict, 'high')
+  assert.equal(fairPriceVerdict(374, 300, 380).percentFromReference, 10)
+})
+
+function round(n: number) {
+  return Math.round(n * 100) / 100
+}
+
+test('seasonal insight reports steady prices instead of naming many months', async () => {
+  const { seasonalInsight } = await import('../lib/prices/calc')
+  const flat = [1, 2, 3, 4, 5, 6, 7, 8].map((m) => rec(2026, m, 100, 100 + (m % 3)))
+  const s = seasonalInsight(flat)
+  assert.equal(s.steady, true)
+  assert.deepEqual(s.cheapestMonths, [])
+})
+
+test('seasonal insight names at most three cheapest months', async () => {
+  const { seasonalInsight } = await import('../lib/prices/calc')
+  const recs = [
+    ...[1, 2, 3, 4, 5].map((m) => rec(2026, m, 50, 50)),
+    rec(2026, 6, 90, 90),
+    rec(2026, 7, 100, 100),
+  ]
+  const s = seasonalInsight(recs)
+  assert.equal(s.cheapestMonths.length, 3)
+  assert.deepEqual(s.dearestMonths, [7])
+})
