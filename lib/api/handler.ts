@@ -2,6 +2,7 @@ import 'server-only'
 import type { NextRequest } from 'next/server'
 import { requireAdmin } from '@/lib/auth/admin'
 import type { AdminSession } from '@/lib/auth/session'
+import type { Permission } from '@/lib/auth/roles'
 import { assertObjectId, handleError } from './response'
 
 type Ctx<P> = { params: Promise<P> }
@@ -17,13 +18,18 @@ export function publicRoute<P = object>(fn: (req: NextRequest, params: P) => Pro
   }
 }
 
-/** Wraps an admin handler: authenticates + authorises on the server before running. */
+/**
+ * Wraps an admin handler: authenticates + authorises on the server before running.
+ * Without an explicit permission, GET is open to every admin role and anything
+ * state-changing requires catalogue write access (admin / editor).
+ */
 export function adminRoute<P = object>(
   fn: (req: NextRequest, params: P, session: AdminSession) => Promise<Response>,
+  opts: { permission?: Permission } = {},
 ) {
   return async (req: NextRequest, ctx: Ctx<P>) => {
     try {
-      const session = await requireAdmin(req)
+      const session = await requireAdmin(req, opts.permission)
       const params = await ctx.params
       if (params && typeof params === 'object' && 'id' in params)
         assertObjectId(String((params as { id: string }).id))

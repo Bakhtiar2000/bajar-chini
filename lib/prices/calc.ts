@@ -157,3 +157,96 @@ export function isUnusualChange(
   if (!previousRef || previousRef <= 0) return false
   return Math.abs(newRef - previousRef) / previousRef > threshold
 }
+
+// ---------------- Seasonality ("best time to buy") ----------------
+
+export type MonthProfile = { month: number; average: number | null; observations: number }
+
+export type SeasonalInsight = {
+  /** One entry per calendar month (1–12), averaged across years. */
+  months: MonthProfile[]
+  /** Up to 3 calendar months within 3% of the cheapest month average. */
+  cheapestMonths: number[]
+  /** Up to 3 calendar months within 3% of the dearest month average. */
+  dearestMonths: number[]
+  /** (dearest − cheapest) / cheapest × 100, or null without enough data. */
+  swingPercent: number | null
+  /** True when prices vary less than STEADY_SWING_PERCENT through the year. */
+  steady: boolean
+}
+
+/**
+ * Averages reference prices by calendar month across all years. Needs at
+ * least `minMonths` distinct observed calendar months to say anything; missing
+ * months stay null (never interpolated).
+ */
+export function seasonalInsight(records: RecordLike[], minMonths = 4): SeasonalInsight {
+  const sums = Array.from({ length: 12 }, () => ({ total: 0, n: 0 }))
+  for (const r of records) {
+    const s = sums[r.month - 1]
+    s.total += refOf(r)
+    s.n += 1
+  }
+  const months: MonthProfile[] = sums.map((s, i) => ({
+    month: i + 1,
+    average: s.n ? round2(s.total / s.n) : null,
+    observations: s.n,
+  }))
+  const observed = months.filter((m) => m.average !== null) as (MonthProfile & {
+    average: number
+  })[]
+  if (observed.length < minMonths) {
+    return { months, cheapestMonths: [], dearestMonths: [], swingPercent: null, steady: false }
+  }
+  const low = Math.min(...observed.map((m) => m.average))
+  const high = Math.max(...observed.map((m) => m.average))
+  if (low <= 0 || high === low) {
+    return { months, cheapestMonths: [], dearestMonths: [], swingPercent: 0, steady: true }
+  }
+  const swingPercent = round2(((high - low) / low) * 100)
+  // A small swing is noise, not a season: say "steady" instead of naming months.
+  if (swingPercent < STEADY_SWING_PERCENT) {
+    return { months, cheapestMonths: [], dearestMonths: [], swingPercent, steady: true }
+  }
+  /** Up to 3 months closest to the extreme (within 3%), returned in calendar order. */
+  const pickNear = (near: (avg: number) => boolean, dir: 1 | -1) =>
+    observed
+      .filter((m) => near(m.average))
+      .sort((a, b) => dir * (a.average - b.average) || a.month - b.month)
+      .slice(0, 3)
+      .map((m) => m.month)
+      .sort((a, b) => a - b)
+  return {
+    months,
+    cheapestMonths: pickNear((a) => a <= low * 1.03, 1),
+    dearestMonths: pickNear((a) => a >= high * 0.97, -1),
+    swingPercent,
+    steady: false,
+  }
+}
+
+/** Below this year-round swing (%), a product is shown as "steady" rather than seasonal. */
+export const STEADY_SWING_PERCENT = 10
+
+// ---------------- Fair price checker ----------------
+
+export type FairPriceVerdict = {
+  verdict: 'below' | 'fair' | 'slightly-high' | 'high'
+  /** Quote compared with the reference (midpoint) price, in percent. */
+  percentFromReference: number
+}
+
+/**
+ * Compares a seller's quote with the observed range. Within the range is fair;
+ * up to 10% above the maximum is "slightly high"; beyond that is "high".
+ */
+export function fairPriceVerdict(quote: number, min: number, max: number): FairPriceVerdict {
+  const ref = calculateReferencePrice(min, max)
+  const percentFromReference = ref > 0 ? round2(((quote - ref) / ref) * 100) : 0
+  let verdict: FairPriceVerdict['verdict']
+  if (quote < min) verdict = 'below'
+  else if (quote <= max) verdict = 'fair'
+  else if (quote <= max * 1.1) verdict = 'slightly-high'
+  else verdict = 'high'
+  return { verdict, percentFromReference }
+}

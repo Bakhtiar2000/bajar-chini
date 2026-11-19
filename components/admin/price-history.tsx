@@ -9,6 +9,7 @@ import { formatMonthYear, toDateInputValue } from '@/lib/format'
 import { UNITS, UNIT_KEYS } from '@/lib/units'
 import type { MarketDTO, PriceRecordDTO } from '@/lib/types'
 import { Button } from '@/components/ui/button'
+import { can, type Role } from '@/lib/auth/roles'
 import { Input, NativeSelect, Textarea } from '@/components/ui/input'
 import { Badge, Label } from '@/components/ui/misc'
 import {
@@ -32,9 +33,11 @@ type Option = { id: string; name: { bn: string; en: string } }
 export function PriceHistory({
   markets,
   initialMarketId,
+  role,
 }: {
   markets: MarketDTO[]
   initialMarketId?: string
+  role: Role
 }) {
   const products = useApi<Option[]>('/api/admin/products/options').data ?? []
   const [productId, setProductId] = useState('')
@@ -156,10 +159,12 @@ export function PriceHistory({
                   </span>
                 </div>
                 <div className="flex gap-1 sm:justify-end">
-                  <Button size="sm" variant="outline" onClick={() => setEditing(r)}>
-                    <Pencil /> Correct
-                  </Button>
-                  {r.status === 'DRAFT' ? (
+                  {r.status === 'DRAFT' || can(role, 'prices:correctPublished') ? (
+                    <Button size="sm" variant="outline" onClick={() => setEditing(r)}>
+                      <Pencil /> Correct
+                    </Button>
+                  ) : null}
+                  {r.status === 'DRAFT' && can(role, 'prices:delete') ? (
                     <Button
                       size="icon-sm"
                       variant="ghost"
@@ -207,6 +212,7 @@ export function PriceHistory({
       {editing ? (
         <EditRecordDialog
           item={editing}
+          canPublish={can(role, 'prices:publish')}
           onClose={() => setEditing(null)}
           onSaved={() => {
             setEditing(null)
@@ -220,10 +226,12 @@ export function PriceHistory({
 
 function EditRecordDialog({
   item,
+  canPublish,
   onClose,
   onSaved,
 }: {
   item: Item
+  canPublish: boolean
   onClose: () => void
   onSaved: () => void
 }) {
@@ -314,6 +322,7 @@ function EditRecordDialog({
             <Label htmlFor="er-status">Status</Label>
             <NativeSelect
               id="er-status"
+              disabled={!canPublish}
               value={status}
               onChange={(e) => setStatus(e.target.value as typeof status)}
             >

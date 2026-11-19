@@ -6,6 +6,7 @@ import { Logo } from './logo'
 import { DesktopNav, MobileNav } from './nav'
 import { LanguageSwitcher } from './language-switcher'
 import { SearchBox } from './search-box'
+import { SavedLinks } from './saved-views'
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const t = getT(locale)
@@ -25,8 +26,9 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         <div className="ml-auto hidden w-full max-w-64 md:block xl:max-w-72">
           <SearchBox variant="header" />
         </div>
+        <SavedLinks />
         <Suspense fallback={<div className="size-10" />}>
-          <LanguageSwitcher className="ml-auto hidden sm:inline-flex md:ml-0" />
+          <LanguageSwitcher className="hidden sm:inline-flex" />
           <MobileNav />
         </Suspense>
       </div>

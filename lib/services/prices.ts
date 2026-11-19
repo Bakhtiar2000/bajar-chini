@@ -3,6 +3,8 @@ import 'server-only'
 import { Types } from 'mongoose'
 import { connectDB, withTransaction } from '@/lib/db/connect'
 import { Category, Market, PriceRecord, Product } from '@/lib/models'
+import { PriceAudit } from '@/lib/models/PriceAudit'
+import { can, type Role } from '@/lib/auth/roles'
 import { ApiError, notFoundError } from '@/lib/api/response'
 import { invalidate } from '@/lib/revalidate'
 import { TAGS } from '@/lib/cache-tags'
@@ -39,6 +41,44 @@ function assertDateInMonth(date: Date, month: number, year: number, label = 'Obs
   if (date.getTime() > Date.now() + 24 * 60 * 60 * 1000) {
     throw new ApiError(422, 'VALIDATION_ERROR', `${label} cannot be in the future.`)
   }
+}
+
+/** Who is making a change (from the verified admin session). */
+export type Actor = { username: string; role: Role }
+
+type Snap = {
+  minimumPrice: number
+  maximumPrice: number
+  referencePrice: number
+  unit: string
+  notes: string
+  status: string
+  observedAt: Date
+  isDemo: boolean
+}
+
+function snapshot(r: any): Snap {
+  return {
+    minimumPrice: r.minimumPrice,
+    maximumPrice: r.maximumPrice,
+    referencePrice: r.referencePrice,
+    unit: r.unit?.key ?? '',
+    notes: r.notes ?? '',
+    status: r.status,
+    observedAt: r.observedAt,
+    isDemo: Boolean(r.isDemo),
+  }
+}
+
+function sameValues(a: Snap, b: Snap) {
+  return (
+    a.minimumPrice === b.minimumPrice &&
+    a.maximumPrice === b.maximumPrice &&
+    a.unit === b.unit &&
+    a.notes === b.notes &&
+    a.status === b.status &&
+    new Date(a.observedAt).getTime() === new Date(b.observedAt).getTime()
+  )
 }
 
 export type MonthlyRow = {
@@ -118,7 +158,11 @@ export async function getMonthlySheet(marketId: string, month: number, year: num
 
 type BulkSaveInput = z.infer<typeof bulkSaveSchema>
 
-export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
+export async function bulkSavePrices(
+  input: BulkSaveInput,
+  actor: Actor,
+  source: 'editor' | 'csv-import' = 'editor',
+) {
   await connectDB()
   const market = await Market.findById(input.marketId).lean()
   if (!market) throw notFoundError('Market')
@@ -182,13 +226,36 @@ export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
     return true
   })
 
-  if (!toSave.length) {
+  const marketId = new Types.ObjectId(input.marketId)
+  const existingRecords = await PriceRecord.find({
+    marketId,
+    month: input.month,
+    year: input.year,
+    productId: { $in: toSave.map((v) => new Types.ObjectId(v.entry.productId)) },
+  }).lean()
+  const existingByProduct = new Map(existingRecords.map((r) => [String(r.productId), r]))
+
+  // Field collectors may only enter drafts; published records need an editor.
+  const allowed = can(actor.role, 'prices:correctPublished')
+    ? toSave
+    : toSave.filter((v) => {
+        if (existingByProduct.get(v.entry.productId)?.status === 'PUBLISHED') {
+          errors.push({
+            index: v.index,
+            productId: v.entry.productId,
+            message: 'This month is already published — only an editor can correct it',
+          })
+          return false
+        }
+        return true
+      })
+
+  if (!allowed.length) {
     return { saved: 0, inserted: 0, updated: 0, errors, touchedPublished: false }
   }
 
-  const marketId = new Types.ObjectId(input.marketId)
   const result = await withTransaction(async (session) => {
-    const ops = toSave.map(({ entry, observedAt }) => ({
+    const ops = allowed.map(({ entry, observedAt }) => ({
       updateOne: {
         // Each record is scoped to its own month: other months are never touched.
         filter: {
@@ -208,9 +275,9 @@ export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
             sourceType: input.sourceType,
             sourceDescription: input.sourceDescription ?? '',
             isDemo: false,
-            updatedBy: actor,
+            updatedBy: actor.username,
           },
-          $setOnInsert: { status: 'DRAFT', currency: 'BDT', createdBy: actor },
+          $setOnInsert: { status: 'DRAFT', currency: 'BDT', createdBy: actor.username },
         },
         upsert: true,
       },
@@ -221,8 +288,40 @@ export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
       month: input.month,
       year: input.year,
       status: 'PUBLISHED',
-      productId: { $in: toSave.map((v) => new Types.ObjectId(v.entry.productId)) },
+      productId: { $in: allowed.map((v) => new Types.ObjectId(v.entry.productId)) },
     }).session(session ?? null)
+
+    // Audit trail: one entry per created or actually-changed record.
+    const after = await PriceRecord.find({
+      marketId,
+      month: input.month,
+      year: input.year,
+      productId: { $in: allowed.map((v) => new Types.ObjectId(v.entry.productId)) },
+    })
+      .session(session ?? null)
+      .lean()
+    const audits = after.flatMap((r) => {
+      const before = existingByProduct.get(String(r.productId))
+      const a = snapshot(r)
+      if (before && sameValues(snapshot(before), a)) return []
+      return [
+        {
+          action: before ? 'update' : 'create',
+          recordId: r._id,
+          productId: r.productId,
+          marketId,
+          month: input.month,
+          year: input.year,
+          actor: actor.username,
+          actorRole: actor.role,
+          source,
+          before: before ? snapshot(before) : null,
+          after: a,
+          wasPublished: before?.status === 'PUBLISHED',
+        },
+      ]
+    })
+    if (audits.length) await PriceAudit.insertMany(audits, { session })
     return { res, touchedPublished: Boolean(touchedPublished) }
   })
 
@@ -230,7 +329,7 @@ export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
   if (result.touchedPublished) invalidate(TAGS.prices)
 
   return {
-    saved: toSave.length,
+    saved: allowed.length,
     inserted: result.res.upsertedCount,
     updated: result.res.modifiedCount,
     errors,
@@ -238,13 +337,16 @@ export async function bulkSavePrices(input: BulkSaveInput, actor: string) {
   }
 }
 
-export async function setPublication(input: {
-  marketId: string
-  month: number
-  year: number
-  action: 'publish' | 'unpublish'
-  productIds?: string[]
-}) {
+export async function setPublication(
+  input: {
+    marketId: string
+    month: number
+    year: number
+    action: 'publish' | 'unpublish'
+    productIds?: string[]
+  },
+  actor: Actor,
+) {
   await connectDB()
   const filter: Record<string, unknown> = {
     marketId: new Types.ObjectId(input.marketId),
@@ -254,11 +356,38 @@ export async function setPublication(input: {
   }
   if (input.productIds?.length)
     filter.productId = { $in: input.productIds.map((id) => new Types.ObjectId(id)) }
-  const res = await PriceRecord.updateMany(filter, {
-    $set:
-      input.action === 'publish'
-        ? { status: 'PUBLISHED', publishedAt: new Date() }
-        : { status: 'DRAFT', publishedAt: null },
+  const affected = await PriceRecord.find(filter).lean()
+  if (!affected.length) return { modified: 0 }
+  const newStatus = input.action === 'publish' ? 'PUBLISHED' : 'DRAFT'
+  const res = await withTransaction(async (session) => {
+    const r = await PriceRecord.updateMany(
+      { _id: { $in: affected.map((a) => a._id) } },
+      {
+        $set:
+          input.action === 'publish'
+            ? { status: 'PUBLISHED', publishedAt: new Date() }
+            : { status: 'DRAFT', publishedAt: null },
+      },
+      { session },
+    )
+    await PriceAudit.insertMany(
+      affected.map((a) => ({
+        action: input.action,
+        recordId: a._id,
+        productId: a.productId,
+        marketId: a.marketId,
+        month: a.month,
+        year: a.year,
+        actor: actor.username,
+        actorRole: actor.role,
+        source: 'publication',
+        before: snapshot(a),
+        after: { ...snapshot(a), status: newStatus },
+        wasPublished: a.status === 'PUBLISHED',
+      })),
+      { session },
+    )
+    return r
   })
   invalidate(TAGS.prices)
   return { modified: res.modifiedCount }
@@ -266,11 +395,18 @@ export async function setPublication(input: {
 
 type RecordPatch = z.infer<typeof priceRecordUpdateSchema>
 
-export async function updatePriceRecord(id: string, patch: RecordPatch, actor: string) {
+export async function updatePriceRecord(id: string, patch: RecordPatch, actor: Actor) {
   await connectDB()
   const doc = await PriceRecord.findById(id)
   if (!doc) throw notFoundError('Price record')
   const wasPublished = doc.status === 'PUBLISHED'
+  if (wasPublished && !can(actor.role, 'prices:correctPublished')) {
+    throw new ApiError(403, 'FORBIDDEN', 'Only an editor can correct a published record')
+  }
+  if (patch.status && patch.status !== doc.status && !can(actor.role, 'prices:publish')) {
+    throw new ApiError(403, 'FORBIDDEN', 'Your role cannot publish or unpublish prices')
+  }
+  const before = snapshot(doc.toObject())
 
   if (patch.minimumPrice !== undefined) doc.minimumPrice = patch.minimumPrice
   if (patch.maximumPrice !== undefined) doc.maximumPrice = patch.maximumPrice
@@ -293,14 +429,36 @@ export async function updatePriceRecord(id: string, patch: RecordPatch, actor: s
   // A corrected value is a verified admin entry, no longer illustrative demo data.
   if (patch.minimumPrice !== undefined || patch.maximumPrice !== undefined) doc.isDemo = false
   doc.referencePrice = calculateReferencePrice(doc.minimumPrice, doc.maximumPrice)
-  doc.updatedBy = actor
+  doc.updatedBy = actor.username
   await doc.save()
+  const after = snapshot(doc.toObject())
+  if (!sameValues(before, after)) {
+    await PriceAudit.create({
+      action:
+        before.status !== after.status
+          ? after.status === 'PUBLISHED'
+            ? 'publish'
+            : 'unpublish'
+          : 'update',
+      recordId: doc._id,
+      productId: doc.productId,
+      marketId: doc.marketId,
+      month: doc.month,
+      year: doc.year,
+      actor: actor.username,
+      actorRole: actor.role,
+      source: 'correction',
+      before,
+      after,
+      wasPublished,
+    })
+  }
 
   if (wasPublished || doc.status === 'PUBLISHED') invalidate(TAGS.prices)
   return toPriceRecordDTO(doc.toObject())
 }
 
-export async function deletePriceRecord(id: string) {
+export async function deletePriceRecord(id: string, actor: Actor) {
   await connectDB()
   const doc = await PriceRecord.findById(id).lean()
   if (!doc) throw notFoundError('Price record')
@@ -312,6 +470,20 @@ export async function deletePriceRecord(id: string) {
     )
   }
   await PriceRecord.deleteOne({ _id: id })
+  await PriceAudit.create({
+    action: 'delete',
+    recordId: doc._id,
+    productId: doc.productId,
+    marketId: doc.marketId,
+    month: doc.month,
+    year: doc.year,
+    actor: actor.username,
+    actorRole: actor.role,
+    source: 'history',
+    before: snapshot(doc),
+    after: null,
+    wasPublished: false,
+  })
 }
 
 export async function getPriceHistory(filter: {
@@ -356,6 +528,78 @@ export async function getPriceHistory(filter: {
       market: mMap.get(String(r.marketId)) ?? null,
       createdBy: r.createdBy || undefined,
       updatedBy: r.updatedBy || undefined,
+    })),
+  }
+}
+
+export async function listPriceAudit(filter: {
+  productId?: string
+  marketId?: string
+  actor?: string
+  action?: string
+  page: number
+  limit: number
+}) {
+  await connectDB()
+  const q: Record<string, unknown> = {}
+  if (filter.productId) q.productId = new Types.ObjectId(filter.productId)
+  if (filter.marketId) q.marketId = new Types.ObjectId(filter.marketId)
+  if (filter.actor) q.actor = filter.actor.toLowerCase()
+  if (
+    filter.action &&
+    ['create', 'update', 'publish', 'unpublish', 'delete'].includes(filter.action)
+  )
+    q.action = filter.action
+  const [total, entries] = await Promise.all([
+    PriceAudit.countDocuments(q),
+    PriceAudit.find(q)
+      .sort({ at: -1, _id: -1 })
+      .skip((filter.page - 1) * filter.limit)
+      .limit(filter.limit)
+      .lean(),
+  ])
+  const productIds = [...new Set(entries.map((e) => String(e.productId)))]
+  const marketIds = [...new Set(entries.map((e) => String(e.marketId)))]
+  const [products, markets] = await Promise.all([
+    Product.find({ _id: { $in: productIds } })
+      .select('name slug')
+      .lean(),
+    Market.find({ _id: { $in: marketIds } })
+      .select('name slug')
+      .lean(),
+  ])
+  const pMap = new Map(products.map((p) => [String(p._id), { name: loc(p.name), slug: p.slug }]))
+  const mMap = new Map(markets.map((m) => [String(m._id), { name: loc(m.name), slug: m.slug }]))
+  const snap = (s: any) =>
+    s
+      ? {
+          minimumPrice: s.minimumPrice,
+          maximumPrice: s.maximumPrice,
+          referencePrice: s.referencePrice,
+          unit: s.unit,
+          notes: s.notes,
+          status: s.status,
+          observedAt: s.observedAt ? new Date(s.observedAt).toISOString() : null,
+        }
+      : null
+  return {
+    total,
+    page: filter.page,
+    limit: filter.limit,
+    items: entries.map((e) => ({
+      id: String(e._id),
+      action: e.action,
+      at: new Date(e.at).toISOString(),
+      actor: e.actor,
+      actorRole: e.actorRole,
+      source: e.source,
+      month: e.month,
+      year: e.year,
+      wasPublished: e.wasPublished,
+      product: pMap.get(String(e.productId)) ?? null,
+      market: mMap.get(String(e.marketId)) ?? null,
+      before: snap(e.before),
+      after: snap(e.after),
     })),
   }
 }

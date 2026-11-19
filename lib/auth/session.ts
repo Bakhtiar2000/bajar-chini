@@ -1,9 +1,10 @@
 import { SignJWT, jwtVerify } from 'jose'
+import { isRole, type Role } from './roles'
 
 export const SESSION_COOKIE = 'bc_admin_session'
 export const SESSION_MAX_AGE = 60 * 60 * 8 // 8 hours
 
-export type AdminSession = { sub: string; username: string; role: 'admin' }
+export type AdminSession = { sub: string; username: string; role: Role }
 
 function secretKey() {
   const secret = process.env.AUTH_SECRET
@@ -34,8 +35,8 @@ export async function verifySessionToken(
       issuer: 'bajarchini',
       audience: 'bajarchini-admin',
     })
-    if (payload.role !== 'admin' || !payload.sub) return null
-    return { sub: payload.sub, username: String(payload.username ?? ''), role: 'admin' }
+    if (!isRole(payload.role) || !payload.sub) return null
+    return { sub: payload.sub, username: String(payload.username ?? ''), role: payload.role }
   } catch {
     return null
   }

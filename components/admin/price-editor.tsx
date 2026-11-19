@@ -1,12 +1,15 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { parseCsvObjects } from '@/lib/csv'
+import { can, type Role } from '@/lib/auth/roles'
 import { toast } from 'sonner'
 import {
   CircleAlert,
   CircleCheck,
   CircleDashed,
   CopyPlus,
+  Download,
   Eye,
   EyeOff,
   FlaskConical,
@@ -17,6 +20,7 @@ import {
   Search,
   Send,
   TriangleAlert,
+  Upload,
 } from 'lucide-react'
 import { api, errorMessage } from '@/lib/client-api'
 import { calculateReferencePrice, isUnusualChange } from '@/lib/prices/calc'
@@ -160,10 +164,17 @@ function prevLabel(p: PriceRecordDTO | null) {
 export function PriceEditor({
   markets,
   now,
+  role,
 }: {
   markets: MarketDTO[]
   now: { year: number; month: number }
+  role: Role
 }) {
+  const canPublish = can(role, 'prices:publish')
+  const canCorrectPublished = can(role, 'prices:correctPublished')
+  const fileRef = useRef<HTMLInputElement>(null)
+  // Rows filled from a CSV are tagged so the audit log records the source.
+  const [importedIds, setImportedIds] = useState<Set<string>>(new Set())
   const defaultMarket = markets.find((m) => m.isDefaultReferenceMarket) ?? markets[0]
   const [marketId, setMarketId] = useState(defaultMarket?.id ?? '')
   const [month, setMonth] = useState(now.month)
@@ -197,6 +208,7 @@ export function PriceEditor({
         if (cancelled) return
         setSheet(data)
         setDrafts(Object.fromEntries(data.rows.map((r) => [r.product.id, initialDraft(r)])))
+        setImportedIds(new Set())
         setLoadedKey(key)
       })
       .catch((error) => {
@@ -285,6 +297,57 @@ export function PriceEditor({
     next?.select()
   }
 
+  /**
+   * Fills the editor from a CSV (same columns as "Export CSV"). Nothing is saved:
+   * imported rows show as "Updated" and still go through Review & save.
+   */
+  const importCsv = async (file: File) => {
+    if (!sheet) return
+    const text = await file.text()
+    const rows = parseCsvObjects(text)
+    const bySlug = new Map(sheet.rows.map((r) => [r.product.slug, r]))
+    const next: Record<string, Draft> = {}
+    const unknown: string[] = []
+    const locked: string[] = []
+    let filled = 0
+    for (const r of rows) {
+      const slug = (r.slug ?? '').toLowerCase()
+      const row = bySlug.get(slug)
+      if (!row) {
+        if (slug) unknown.push(slug)
+        continue
+      }
+      const min = (r.min ?? r.minimum ?? r.minimumprice ?? '').replace(/,/g, '')
+      const max = (r.max ?? r.maximum ?? r.maximumprice ?? '').replace(/,/g, '')
+      if (min === '' && max === '') continue
+      if (row.current?.status === 'PUBLISHED' && !canCorrectPublished) {
+        locked.push(slug)
+        continue
+      }
+      const unitKey = UNIT_KEYS.includes(r.unit as (typeof UNIT_KEYS)[number])
+        ? r.unit
+        : (drafts[row.product.id]?.unitKey ?? row.product.defaultUnit.key)
+      next[row.product.id] = {
+        min,
+        max,
+        unitKey,
+        notes: r.notes ?? drafts[row.product.id]?.notes ?? '',
+      }
+      filled++
+    }
+    setDrafts((prev) => ({ ...prev, ...next }))
+    setImportedIds((prev) => new Set([...prev, ...Object.keys(next)]))
+    toast.success(`Filled ${filled} row(s) from ${file.name}. Review the changes, then save.`)
+    if (unknown.length)
+      toast.warning(
+        `${unknown.length} unknown product slug(s) skipped: ${unknown.slice(0, 5).join(', ')}`,
+      )
+    if (locked.length)
+      toast.warning(`${locked.length} published row(s) skipped — only an editor can correct them`)
+  }
+
+  const exportHref = `/api/admin/prices/export?marketId=${marketId}&month=${month}&year=${year}`
+
   const save = async () => {
     if (!sheet || !dirty.length) return
     setSaving(true)
@@ -302,6 +365,9 @@ export function PriceEditor({
           month,
           year,
           observedAt,
+          source: dirty.every(({ row }) => importedIds.has(row.product.id))
+            ? 'csv-import'
+            : 'editor',
           entries: dirty.map(({ row, draft }) => ({
             productId: row.product.id,
             minimumPrice: Number(draft.min),
@@ -468,20 +534,45 @@ export function PriceEditor({
             <Badge variant="outline">{sheet.summary.draft} draft</Badge>
             <Badge variant="muted">{sheet.summary.missing} not entered</Badge>
             <div className="ml-auto flex flex-wrap gap-2">
-              {sheet.summary.published > 0 ? (
+              <Button size="sm" variant="outline" asChild>
+                <a href={exportHref} download>
+                  <Download /> Export CSV
+                </a>
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => fileRef.current?.click()}>
+                <Upload /> Import CSV
+              </Button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".csv,text/csv"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0]
+                  if (f) void importCsv(f)
+                  e.target.value = ''
+                }}
+              />
+              {canPublish && sheet.summary.published > 0 ? (
                 <Button size="sm" variant="ghost" onClick={() => setPublishOpen('unpublish')}>
                   <EyeOff /> Unpublish month
                 </Button>
               ) : null}
-              <Button
-                size="sm"
-                variant="secondary"
-                disabled={!sheet.summary.draft || dirty.length > 0}
-                onClick={() => setPublishOpen('publish')}
-                title={dirty.length ? 'Save your changes first' : undefined}
-              >
-                <Send /> Publish {sheet.summary.draft} draft(s)
-              </Button>
+              {canPublish ? (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  disabled={!sheet.summary.draft || dirty.length > 0}
+                  onClick={() => setPublishOpen('publish')}
+                  title={dirty.length ? 'Save your changes first' : undefined}
+                >
+                  <Send /> Publish {sheet.summary.draft} draft(s)
+                </Button>
+              ) : (
+                <Badge variant="muted" title="An editor publishes the month">
+                  Drafts are published by an editor
+                </Badge>
+              )}
             </div>
           </div>
 

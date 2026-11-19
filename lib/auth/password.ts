@@ -2,6 +2,7 @@ import 'server-only'
 import bcrypt from 'bcryptjs'
 import { connectDB } from '@/lib/db/connect'
 import { AdminUser } from '@/lib/models'
+import { isRole } from './roles'
 
 export const hashPassword = (plain: string) => bcrypt.hash(plain, 12)
 
@@ -29,12 +30,16 @@ export async function verifyAdminCredentials(username: string, password: string)
     }
   }
 
-  const user = await AdminUser.findOne({ username: normalized })
+  const user = await AdminUser.findOne({ username: normalized, isActive: { $ne: false } })
   const valid = await bcrypt.compare(password, user?.passwordHash ?? DUMMY_HASH)
   if (!user || !valid) return null
   user.lastLoginAt = new Date()
   await user.save()
-  return { id: String(user._id), username: user.username }
+  return {
+    id: String(user._id),
+    username: user.username,
+    role: isRole(user.role) ? user.role : ('admin' as const),
+  }
 }
 
 // Simple in-memory login throttle (per IP). Good enough for a single-instance admin panel.

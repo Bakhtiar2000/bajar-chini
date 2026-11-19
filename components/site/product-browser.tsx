@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { SearchX } from 'lucide-react'
 import type { Locale } from '@/i18n/config'
 import { getT } from '@/i18n/server'
-import { normalizeSearch } from '@/lib/utils'
+import { buildSearchIndex, productSearchDoc, searchIndex } from '@/lib/search/engine'
 import { toLocaleDigits, type Localized } from '@/lib/format'
 import type { ProductCardDTO } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -27,9 +27,16 @@ export function parseFilters(sp: SP): FilterState & { page: number } {
 }
 
 function applyFilters(products: ProductCardDTO[], f: FilterState, locale: Locale) {
-  const q = normalizeSearch(f.q)
+  // Same Bengali / English / Banglish matching as the main search.
+  const matches = f.q.trim()
+    ? new Set(
+        searchIndex(buildSearchIndex(products.map(productSearchDoc)), f.q, products.length).map(
+          (h) => h.id,
+        ),
+      )
+    : null
   let list = products.filter((p) => {
-    if (q && !normalizeSearch(`${p.name.bn} ${p.name.en}`).includes(q)) return false
+    if (matches && !matches.has(p.id)) return false
     if (f.seasonal && !p.isSeasonal) return false
     if (f.updated && p.latestPrice?.freshness !== 'current') return false
     if (f.variety && p.variety?.en !== f.variety) return false

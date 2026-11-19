@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { connection } from 'next/server'
 import { adminListMarkets } from '@/lib/data/admin'
+import { getAdminSession } from '@/lib/auth/admin'
 import { currentYearMonth } from '@/lib/prices/now'
 import { AdminPageHeader } from '@/components/admin/shell'
 import { PricesTabs } from '@/components/admin/prices-tabs'
@@ -9,7 +10,11 @@ export const metadata: Metadata = { title: 'Monthly prices' }
 
 export default async function AdminPricesPage({ searchParams }: PageProps<'/admin/prices'>) {
   await connection()
-  const [markets, sp] = await Promise.all([adminListMarkets(), searchParams])
+  const [markets, sp, session] = await Promise.all([
+    adminListMarkets(),
+    searchParams,
+    getAdminSession(),
+  ])
   const tab = sp.tab === 'history' ? 'history' : 'entry'
   const marketId = typeof sp.marketId === 'string' ? sp.marketId : undefined
   return (
@@ -23,6 +28,7 @@ export default async function AdminPricesPage({ searchParams }: PageProps<'/admi
         now={currentYearMonth()}
         initialTab={tab}
         initialMarketId={marketId}
+        role={session?.role ?? 'collector'}
       />
     </>
   )

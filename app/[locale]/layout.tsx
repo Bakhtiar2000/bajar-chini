@@ -6,6 +6,7 @@ import { isLocale, locales, type Locale } from '@/i18n/config'
 import { getT } from '@/i18n/server'
 import { messages } from '@/i18n/messages'
 import { IntlProvider } from '@/components/providers/intl-provider'
+import { ServiceWorkerRegistration } from '@/components/providers/service-worker'
 import { SiteHeader } from '@/components/site/header'
 import { SiteFooter } from '@/components/site/footer'
 import { absoluteUrl } from '@/lib/utils'
@@ -32,6 +33,8 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
     title: { default: title, template: `%s | ${t('common.appName')}` },
     description: t('home.heroDescription'),
     applicationName: t('common.appName'),
+    appleWebApp: { capable: true, title: t('common.appName'), statusBarStyle: 'default' },
+    icons: { icon: '/icon.svg', apple: '/icons/apple-touch-icon.png' },
     alternates: pageAlternates(locale, '/'),
     openGraph: {
       type: 'website',
@@ -66,6 +69,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           </main>
           <SiteFooter locale={locale} />
           <Toaster position="top-center" richColors />
+          <ServiceWorkerRegistration />
         </IntlProvider>
       </body>
     </html>

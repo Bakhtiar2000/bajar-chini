@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import { SearchX } from 'lucide-react'
 import { localizePath, type Locale } from '@/i18n/config'
 import { getLocale, getT } from '@/i18n/server'
-import { querySearch } from '@/lib/data/queries'
+import { searchCatalog } from '@/lib/data/search'
 import { pick } from '@/lib/format'
 import { SearchBox } from '@/components/site/search-box'
 import { ProductCard, ProductGrid } from '@/components/site/product-card'
@@ -55,7 +55,7 @@ async function Results({
     )
   }
 
-  const results = await querySearch(q, 40)
+  const results = await searchCatalog(q, 40)
   if (!results.products.length && !results.categories.length) {
     return (
       <div className="border-border flex flex-col items-center gap-3 rounded-2xl border border-dashed bg-white px-6 py-14 text-center">

@@ -5,7 +5,6 @@ import { connectDB } from '@/lib/db/connect'
 import { Article, Category, Market, PriceRecord, Product } from '@/lib/models'
 import { analyzePeriod, calculateMonthlyChange, type YearMonth } from '@/lib/prices/calc'
 import { currentYearMonth } from '@/lib/prices/now'
-import { escapeRegex, normalizeSearch } from '@/lib/utils'
 import type {
   ArticleDTO,
   CategoryDTO,
@@ -15,7 +14,6 @@ import type {
   MarketPriceHistory,
   ProductCardDTO,
   ProductDetailDTO,
-  SearchResultDTO,
 } from '@/lib/types'
 import {
   loc,
@@ -260,47 +258,37 @@ export async function queryArticleBySlug(slug: string): Promise<ArticleDTO | nul
  * Bengali + English search across product names, alternative names and category names.
  * Text is NFC-normalised so that different encodings of Bengali letters (e.g. য়) match.
  */
-export async function querySearch(raw: string, limit = 20): Promise<SearchResultDTO> {
-  const q = normalizeSearch(raw)
-  if (!q) return { products: [], categories: [] }
+export type SearchCorpusDTO = {
+  products: {
+    id: string
+    slug: string
+    name: { bn: string; en: string }
+    alternativeNames: { bn: string[]; en: string[] }
+    variety: { bn: string; en: string }
+    categoryId: string
+  }[]
+  categories: CategoryRef[]
+}
+
+/** Every searchable name of every published product and active category (small, cacheable). */
+export async function querySearchCorpus(): Promise<SearchCorpusDTO> {
   await connectDB()
-  const pattern = new RegExp(escapeRegex(q), 'i')
-  // Categories match on word prefixes only ("rui" must not match "Fruits").
-  const wordPrefix = new RegExp(`(^|\\s)${escapeRegex(q)}`, 'i')
-
-  const categoryDocs = await Category.find({
-    isActive: true,
-    $or: [{ 'name.bn': wordPrefix }, { 'name.en': wordPrefix }],
-  })
-    .sort({ displayOrder: 1 })
-    .lean()
-  const categoryIds = categoryDocs.map((c) => c._id)
-
-  const docs = await Product.find({
-    isPublished: true,
-    $or: [
-      { searchText: pattern },
-      ...(categoryIds.length ? [{ categoryId: { $in: categoryIds } }] : []),
-    ],
-  })
-    .select(`${CARD_FIELDS} searchText`)
-    .limit(200)
-    .lean()
-
-  const startsWord = new RegExp(`(^|\\s|\\|)${escapeRegex(q)}`, 'i')
-  const score = (d: any) => {
-    const names = [d.name?.bn, d.name?.en].map((n: string) => normalizeSearch(n ?? ''))
-    if (names.includes(q)) return 0
-    if (names.some((n) => n.startsWith(q))) return 1
-    if (startsWord.test(d.searchText ?? '')) return 2
-    if (pattern.test(d.searchText ?? '')) return 3
-    return 4 // matched through category
-  }
-  docs.sort((a, b) => score(a) - score(b) || String(a.name?.en).localeCompare(String(b.name?.en)))
-
+  const [products, categories] = await Promise.all([
+    Product.find({ isPublished: true })
+      .select('slug name alternativeNames variety categoryId')
+      .lean(),
+    Category.find({ isActive: true }).sort({ displayOrder: 1 }).lean(),
+  ])
   return {
-    products: await hydrateCards(docs.slice(0, limit)),
-    categories: categoryDocs.map(toCategoryRef),
+    products: products.map((p: any) => ({
+      id: String(p._id),
+      slug: p.slug,
+      name: loc(p.name),
+      alternativeNames: locList(p.alternativeNames),
+      variety: loc(p.variety),
+      categoryId: String(p.categoryId),
+    })),
+    categories: categories.map(toCategoryRef),
   }
 }
 
@@ -320,4 +308,150 @@ export async function queryAllSlugs(): Promise<{
     categories: categories.map((c) => c.slug),
     articles: articles.map((a) => a.slug),
   }
+}
+
+export type PriceMoverDTO = {
+  productId: string
+  percent: number
+  change: number
+  current: { year: number; month: number; ref: number }
+  previous: { year: number; month: number; ref: number }
+  isDemo: boolean
+}
+
+/**
+ * Month-on-month changes for the default market, using the same rules as the
+ * product page (consecutive months only, gaps never treated as zero). Only
+ * products observed this month or last month are included, so stale data
+ * never shows up as a "mover".
+ */
+export async function queryPriceMovers(): Promise<PriceMoverDTO[]> {
+  await connectDB()
+  const market = await queryDefaultMarket()
+  if (!market) return []
+  const now = currentYearMonth()
+  const rows = await PriceRecord.aggregate<{
+    _id: Types.ObjectId
+    recs: {
+      year: number
+      month: number
+      minimumPrice: number
+      maximumPrice: number
+      referencePrice: number
+      isDemo: boolean
+    }[]
+  }>([
+    { $match: { marketId: new Types.ObjectId(market.id), status: PUBLISHED } },
+    { $sort: { year: -1, month: -1 } },
+    {
+      $group: {
+        _id: '$productId',
+        recs: {
+          $push: {
+            year: '$year',
+            month: '$month',
+            minimumPrice: '$minimumPrice',
+            maximumPrice: '$maximumPrice',
+            referencePrice: '$referencePrice',
+            isDemo: '$isDemo',
+          },
+        },
+      },
+    },
+    { $project: { recs: { $slice: ['$recs', 2] } } },
+  ])
+  const published = new Set(
+    (await Product.find({ isPublished: true }).select('_id').lean()).map((p) => String(p._id)),
+  )
+  const out: PriceMoverDTO[] = []
+  for (const r of rows) {
+    if (!published.has(String(r._id))) continue
+    const change = calculateMonthlyChange(r.recs)
+    if (change.status !== 'ok' || change.change === 0) continue
+    const age = now.year * 12 + now.month - (change.current.year * 12 + change.current.month)
+    if (age > 1) continue
+    out.push({
+      productId: String(r._id),
+      percent: change.percent,
+      change: change.change,
+      current: change.current,
+      previous: change.previous,
+      isDemo: r.recs.some((x) => x.isDemo),
+    })
+  }
+  return out.sort((a, b) => Math.abs(b.percent) - Math.abs(a.percent))
+}
+
+export type OpenDataRow = {
+  product: string
+  productBn: string
+  productEn: string
+  category: string
+  market: string
+  marketBn: string
+  marketEn: string
+  year: number
+  month: number
+  minimumPrice: number
+  maximumPrice: number
+  referencePrice: number
+  currency: 'BDT'
+  unit: string
+  observedAt: string
+  sourceType: string
+  isDemo: boolean
+}
+
+/** Every PUBLISHED observation of a published product, for the open-data download. */
+export async function queryOpenData(
+  filter: { market?: string; year?: number; month?: number } = {},
+): Promise<OpenDataRow[]> {
+  await connectDB()
+  const [products, categories, markets] = await Promise.all([
+    Product.find({ isPublished: true }).select('slug name categoryId').lean(),
+    Category.find({}).select('slug').lean(),
+    Market.find(filter.market ? { slug: filter.market } : {})
+      .select('slug name')
+      .lean(),
+  ])
+  if (!markets.length) return []
+  const catById = new Map(categories.map((c) => [String(c._id), c.slug]))
+  const prodById = new Map(products.map((p) => [String(p._id), p]))
+  const marketById = new Map(markets.map((m) => [String(m._id), m]))
+  const match: Record<string, unknown> = {
+    status: PUBLISHED,
+    productId: { $in: products.map((p) => p._id) },
+    marketId: { $in: markets.map((m) => m._id) },
+  }
+  if (filter.year) match.year = filter.year
+  if (filter.month) match.month = filter.month
+  const records = await PriceRecord.find(match)
+    .sort({ year: -1, month: -1 })
+    .select(
+      'productId marketId year month minimumPrice maximumPrice referencePrice unit observedAt sourceType isDemo',
+    )
+    .lean()
+  return records.map((r: any) => {
+    const p: any = prodById.get(String(r.productId))
+    const m: any = marketById.get(String(r.marketId))
+    return {
+      product: p.slug,
+      productBn: p.name?.bn ?? '',
+      productEn: p.name?.en ?? '',
+      category: catById.get(String(p.categoryId)) ?? '',
+      market: m.slug,
+      marketBn: m.name?.bn ?? '',
+      marketEn: m.name?.en ?? '',
+      year: r.year,
+      month: r.month,
+      minimumPrice: r.minimumPrice,
+      maximumPrice: r.maximumPrice,
+      referencePrice: r.referencePrice,
+      currency: 'BDT' as const,
+      unit: r.unit?.key ?? '',
+      observedAt: new Date(r.observedAt).toISOString(),
+      sourceType: r.sourceType ?? '',
+      isDemo: Boolean(r.isDemo),
+    }
+  })
 }
