@@ -205,6 +205,95 @@ export const CHECKLISTS: Record<string, { good: Pair[]; warn: Pair[] }> = {
       ['দলা বাঁধা বা ভেজা ভাব।', 'Clumps or a damp feel.'],
     ],
   },
+  dryfish: {
+    good: [
+      [
+        'হালকা ও খটখটে শুকনো — হাতে নিলে ভাঙে বা বাঁকে, নরম নয়।',
+        'Light and bone-dry — it snaps or bends, it is not soft.',
+      ],
+      [
+        'স্বাভাবিক শুঁটকির ঘ্রাণ, কোনো রাসায়নিক বা কেরোসিনের গন্ধ নেই।',
+        'A natural dried-fish smell with no chemical or kerosene odour.',
+      ],
+      [
+        'গায়ে হালকা মাছি বা পিঁপড়া বসে — বিষমুক্ত শুঁটকির লক্ষণ।',
+        'A few flies or ants settle on it — a sign it is not treated with pesticide.',
+      ],
+      [
+        'রং প্রাকৃতিক ও সমান, লবণের সাদা দানা কম।',
+        'Natural, even colour with little white salt crust.',
+      ],
+    ],
+    warn: [
+      [
+        'স্তূপের ওপর একটিও মাছি বসছে না — কীটনাশক দেওয়া হতে পারে।',
+        'Not a single fly lands on the pile — it may be sprayed with pesticide.',
+      ],
+      ['ভেজা, স্যাঁতসেঁতে বা নরম ভাব।', 'It feels damp, moist or soft.'],
+      [
+        'সাদা বা সবুজ ছত্রাক, পোকা বা পোকার গুঁড়া।',
+        'White or green mould, insects or insect dust.',
+      ],
+      [
+        'অস্বাভাবিক উজ্জ্বল লালচে বা হলুদ রং — রং মেশানো হতে পারে।',
+        'An unnaturally bright red or yellow tint — it may be dyed.',
+      ],
+    ],
+  },
+  dairy: {
+    good: [
+      ['প্রাকৃতিক সাদা বা হালকা ঘিয়ে রং।', 'A natural white or light creamy colour.'],
+      ['টাটকা দুধের হালকা মিষ্টি ঘ্রাণ।', 'A light, sweet smell of fresh milk.'],
+      [
+        'পাত্র ও ঢাকনা পরিষ্কার, মোড়কে তারিখ লেখা।',
+        'Clean container and lid, with a date on the pack.',
+      ],
+    ],
+    warn: [
+      ['টক, তিতা বা ভ্যাপসা গন্ধ।', 'A sour, bitter or stale smell.'],
+      ['দানা দানা বা ছানা কেটে যাওয়া ভাব।', 'It looks grainy or has curdled.'],
+      [
+        'অস্বাভাবিক পাতলা বা অস্বাভাবিক ঘন — পানি বা অন্য কিছু মেশানো হতে পারে।',
+        'Unusually thin or unusually thick — it may be watered down or adulterated.',
+      ],
+      ['মোড়কে মেয়াদ বা উৎপাদনের তারিখ নেই।', 'No expiry or production date on the pack.'],
+    ],
+  },
+  oil: {
+    good: [
+      ['স্বচ্ছ, তলানি ছাড়া।', 'Clear, with no sediment.'],
+      [
+        'বোতলের সিল অক্ষত, মোড়কে মেয়াদ ও বিএসটিআই চিহ্ন আছে।',
+        'The bottle seal is intact and the label shows an expiry date and BSTI mark.',
+      ],
+      ['তেলের ধরন অনুযায়ী স্বাভাবিক ঘ্রাণ।', 'A normal smell for the type of oil.'],
+    ],
+    warn: [
+      ['ঘোলা, তলানি বা ভাসমান কণা আছে।', 'Cloudy, with sediment or floating particles.'],
+      ['পোড়া, বাসি বা কটু গন্ধ।', 'A burnt, rancid or harsh smell.'],
+      [
+        'খোলা তেল খুব কম দামে — পুরনো বা ভেজাল তেল হতে পারে।',
+        'Loose oil at a suspiciously low price — it may be reused or mixed.',
+      ],
+      ['বোতলের সিল খোলা বা লেবেল ঘষা।', 'The bottle seal is broken or the label is scuffed.'],
+    ],
+  },
+  staple: {
+    good: [
+      ['শুকনো ও ঝরঝরে, দলা বাঁধা নয়।', 'Dry and free-flowing, not lumpy.'],
+      [
+        'প্যাকেট অক্ষত, মেয়াদ ও ওজন স্পষ্ট লেখা।',
+        'The pack is intact with a clear expiry date and weight.',
+      ],
+      ['প্রাকৃতিক রং ও কোনো বাজে গন্ধ নেই।', 'A natural colour and no off smell.'],
+    ],
+    warn: [
+      ['ভেজা ভাব, দলা বা ছত্রাক।', 'Dampness, clumps or mould.'],
+      ['পোকা, পোকার গুঁড়া বা জালের মতো সুতা।', 'Insects, insect dust or web-like threads.'],
+      ['ভ্যাপসা বা টক গন্ধ।', 'A musty or sour smell.'],
+      ['প্যাকেট ফাটা বা মেয়াদ পার হয়ে গেছে।', 'A torn pack, or the expiry date has passed.'],
+    ],
+  },
   egg: {
     good: [
       ['খোসা পরিষ্কার, অক্ষত ও সামান্য খসখসে।', 'The shell is clean, intact and slightly rough.'],

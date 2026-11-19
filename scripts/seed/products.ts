@@ -1,3 +1,4 @@
+import type { UnitKey } from '../../lib/units'
 import type { Pair } from './checklists'
 
 const U = (id: string) => `https://images.unsplash.com/photo-${id}?w=1000&q=75&auto=format&fit=crop`
@@ -17,7 +18,7 @@ export type SeedProduct = {
   season: Pair
   months?: number[]
   variety?: Pair
-  unit: 'kg' | 'piece' | 'hali' | 'dozen' | 'bundle'
+  unit: UnitKey
   image?: string
   featured?: boolean
   popular?: boolean

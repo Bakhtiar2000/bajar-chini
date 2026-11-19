@@ -13,7 +13,7 @@ Next.js 16 (App Router, Cache Components, `proxy.ts`) · TypeScript · Tailwind 
 ```bash
 cp .env.example .env.local   # fill in the values (see below)
 npm install
-npm run seed                 # categories, 49 products, reference market, guides, DEMO price history, admin user
+npm run seed                 # 14 categories, 149 products, reference market, guides, DEMO price history, admin user
 npm run dev                  # http://localhost:3000
 ```
 
@@ -55,6 +55,12 @@ Every seeded price is **illustrative DEMO DATA**: it has `isDemo: true`, carries
 - `npm run seed:clear-demo` deletes only demo price records.
 - Any price you enter or correct in the admin panel is stored as a real observation (`isDemo: false`).
 - `npm run seed` refuses to run if real observations exist, unless you pass `-- --force`.
+
+### Seed images
+
+Product and category photos come from Wikimedia Commons, were checked by hand, and are stored in Cloudinary under `bajarchini/seed/`. `scripts/seed/images.json` maps each slug to its Cloudinary URL, and the seed uses it over any inline image. Commons images are licensed (mostly CC BY / CC BY-SA). The source page for each one is listed in `scripts/seed/image-credits.json`, so keep that file if you publish the site.
+
+To replace an image, add `{ "<slug>": {title, url, thumb, w} }` to a selection JSON and run `python scripts/seed/upload-images.py <selection.json>`, then `npm run seed`.
 
 ## Admin
 

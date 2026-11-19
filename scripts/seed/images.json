@@ -1,0 +1,821 @@
+{
+  "products": {
+    "rui-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631300/bajarchini/seed/product/rui-fish.jpg",
+      "publicId": "bajarchini/seed/product/rui-fish",
+      "source": "File:Rohu (Labeo rohita).jpg"
+    },
+    "hilsa": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631306/bajarchini/seed/product/hilsa.jpg",
+      "publicId": "bajarchini/seed/product/hilsa",
+      "source": "File:Hilsa Ilisha Fish.jpg"
+    },
+    "pangas-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631387/bajarchini/seed/product/pangas-fish.jpg",
+      "publicId": "bajarchini/seed/product/pangas-fish",
+      "source": "File:Pla sawai89.jpg"
+    },
+    "tilapia-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631393/bajarchini/seed/product/tilapia-fish.jpg",
+      "publicId": "bajarchini/seed/product/tilapia-fish",
+      "source": "File:Oreochromis niloticus at Kanchanaburi market.jpg"
+    },
+    "shing-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631399/bajarchini/seed/product/shing-fish.jpg",
+      "publicId": "bajarchini/seed/product/shing-fish",
+      "source": "File:Heteropneustes fossilis (Stinging catfish).jpg"
+    },
+    "koi-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631403/bajarchini/seed/product/koi-fish.jpg",
+      "publicId": "bajarchini/seed/product/koi-fish",
+      "source": "File:Anabas testudineus 52464343.jpg"
+    },
+    "golda-chingri": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631408/bajarchini/seed/product/golda-chingri.jpg",
+      "publicId": "bajarchini/seed/product/golda-chingri",
+      "source": "File:Macrobrachium rosenbergii.jpg"
+    },
+    "pabda-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631414/bajarchini/seed/product/pabda-fish.jpg",
+      "publicId": "bajarchini/seed/product/pabda-fish",
+      "source": "File:Butterfish (Pabda).jpg"
+    },
+    "bagda-chingri": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631419/bajarchini/seed/product/bagda-chingri.jpg",
+      "publicId": "bajarchini/seed/product/bagda-chingri",
+      "source": "File:Freshippo tiger shrim.jpg"
+    },
+    "shol-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631424/bajarchini/seed/product/shol-fish.jpg",
+      "publicId": "bajarchini/seed/product/shol-fish",
+      "source": "File:Channa striata - ബ്രാൽ.JPG"
+    },
+    "boal-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631429/bajarchini/seed/product/boal-fish.jpg",
+      "publicId": "bajarchini/seed/product/boal-fish",
+      "source": "File:Wallago attu @ kerala.jpg"
+    },
+    "tengra-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631434/bajarchini/seed/product/tengra-fish.jpg",
+      "publicId": "bajarchini/seed/product/tengra-fish",
+      "source": "File:Mystus vittatus.jpg"
+    },
+    "magur-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631439/bajarchini/seed/product/magur-fish.jpg",
+      "publicId": "bajarchini/seed/product/magur-fish",
+      "source": "File:Aquarium tropical de Pierrefitte-Nestalas 03082018 Clarias batrachus 2.jpg"
+    },
+    "puti-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631444/bajarchini/seed/product/puti-fish.jpg",
+      "publicId": "bajarchini/seed/product/puti-fish",
+      "source": "File:Puntius sophore - Ashwin A - 433780152.jpeg"
+    },
+    "rupchanda-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631449/bajarchini/seed/product/rupchanda-fish.jpg",
+      "publicId": "bajarchini/seed/product/rupchanda-fish",
+      "source": "File:Pampus argenteus Saigon market.JPG"
+    },
+    "kachki-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631454/bajarchini/seed/product/kachki-fish.jpg",
+      "publicId": "bajarchini/seed/product/kachki-fish",
+      "source": "File:Ganges river sprat (Kachki fish).jpg"
+    },
+    "broiler-chicken": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631460/bajarchini/seed/product/broiler-chicken.jpg",
+      "publicId": "bajarchini/seed/product/broiler-chicken",
+      "source": "File:Broiler Chickens 001.jpg"
+    },
+    "layer-chicken": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631465/bajarchini/seed/product/layer-chicken.jpg",
+      "publicId": "bajarchini/seed/product/layer-chicken",
+      "source": "File:Two hens (4186781145).jpg"
+    },
+    "goat-meat": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631471/bajarchini/seed/product/goat-meat.jpg",
+      "publicId": "bajarchini/seed/product/goat-meat",
+      "source": "File:Butchered Goat Meat For Sale at Fruit Garden Market.jpg"
+    },
+    "sheep-meat": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631475/bajarchini/seed/product/sheep-meat.jpg",
+      "publicId": "bajarchini/seed/product/sheep-meat",
+      "source": "File:Raw lamb cutlets with shredded ginger and rosemary.jpg"
+    },
+    "duck": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631481/bajarchini/seed/product/duck.jpg",
+      "publicId": "bajarchini/seed/product/duck",
+      "source": "File:A woman herding domestic ducks along a village road, Bangladesh 2026 02.jpg"
+    },
+    "potato": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631486/bajarchini/seed/product/potato.jpg",
+      "publicId": "bajarchini/seed/product/potato",
+      "source": "File:Solanales - Solanum tuberosum - 4.jpg"
+    },
+    "tomato": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631490/bajarchini/seed/product/tomato.jpg",
+      "publicId": "bajarchini/seed/product/tomato",
+      "source": "File:Tomato je.jpg"
+    },
+    "cauliflower": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631495/bajarchini/seed/product/cauliflower.jpg",
+      "publicId": "bajarchini/seed/product/cauliflower",
+      "source": "File:Brassica oleracea var. botrytis (Coliflor).jpg"
+    },
+    "bottle-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631500/bajarchini/seed/product/bottle-gourd.jpg",
+      "publicId": "bajarchini/seed/product/bottle-gourd",
+      "source": "File:Lagenaria siceraria baby fruit.jpeg"
+    },
+    "pointed-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631505/bajarchini/seed/product/pointed-gourd.jpg",
+      "publicId": "bajarchini/seed/product/pointed-gourd",
+      "source": "File:Trichosanthes dioica (fruit).jpg"
+    },
+    "carrot": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631510/bajarchini/seed/product/carrot.jpg",
+      "publicId": "bajarchini/seed/product/carrot",
+      "source": "File:Carrots at Ljubljana Central Market.JPG"
+    },
+    "okra": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631514/bajarchini/seed/product/okra.jpg",
+      "publicId": "bajarchini/seed/product/okra",
+      "source": "File:Quiabo.jpg"
+    },
+    "ridge-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631519/bajarchini/seed/product/ridge-gourd.jpg",
+      "publicId": "bajarchini/seed/product/ridge-gourd",
+      "source": "File:Luffa acutangula1.jpg"
+    },
+    "sponge-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631525/bajarchini/seed/product/sponge-gourd.jpg",
+      "publicId": "bajarchini/seed/product/sponge-gourd",
+      "source": "File:Starr-120606-7065-Luffa aegyptiaca-fruit-Laulima Farm Kipahulu-Maui (42837845094).jpg"
+    },
+    "snake-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631531/bajarchini/seed/product/snake-gourd.jpg",
+      "publicId": "bajarchini/seed/product/snake-gourd",
+      "source": "File:Trichosanthes cucumerina (snake gourd).jpg"
+    },
+    "teasel-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631535/bajarchini/seed/product/teasel-gourd.jpg",
+      "publicId": "bajarchini/seed/product/teasel-gourd",
+      "source": "File:Spiny gourd.JPG"
+    },
+    "pumpkin": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631540/bajarchini/seed/product/pumpkin.jpg",
+      "publicId": "bajarchini/seed/product/pumpkin",
+      "source": "File:A Cut of Pumpkins.jpg"
+    },
+    "cucumber": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631544/bajarchini/seed/product/cucumber.jpg",
+      "publicId": "bajarchini/seed/product/cucumber",
+      "source": "File:Ryerson Market cucumbers on sale.jpg"
+    },
+    "radish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631550/bajarchini/seed/product/radish.jpg",
+      "publicId": "bajarchini/seed/product/radish",
+      "source": "File:Daikon radish - Minowase.jpg"
+    },
+    "yardlong-bean": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631555/bajarchini/seed/product/yardlong-bean.jpg",
+      "publicId": "bajarchini/seed/product/yardlong-bean",
+      "source": "File:Snake Bean BNC.jpg"
+    },
+    "sweet-potato": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631560/bajarchini/seed/product/sweet-potato.jpg",
+      "publicId": "bajarchini/seed/product/sweet-potato",
+      "source": "File:Ipomoea batatas 006.JPG"
+    },
+    "taro-root": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631564/bajarchini/seed/product/taro-root.jpg",
+      "publicId": "bajarchini/seed/product/taro-root",
+      "source": "File:Taro corms 2.jpg"
+    },
+    "capsicum": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631569/bajarchini/seed/product/capsicum.jpg",
+      "publicId": "bajarchini/seed/product/capsicum",
+      "source": "File:Red capsicum and cross section.jpg"
+    },
+    "palong-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631574/bajarchini/seed/product/palong-shak.jpg",
+      "publicId": "bajarchini/seed/product/palong-shak",
+      "source": "File:Spinach leaves.jpg"
+    },
+    "pui-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631580/bajarchini/seed/product/pui-shak.jpg",
+      "publicId": "bajarchini/seed/product/pui-shak",
+      "source": "File:Basella alba leaves 27052014.jpg"
+    },
+    "mula-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631585/bajarchini/seed/product/mula-shak.jpg",
+      "publicId": "bajarchini/seed/product/mula-shak",
+      "source": "File:9959Labanos or Radish Leaves 05.jpg"
+    },
+    "mango": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631590/bajarchini/seed/product/mango.jpg",
+      "publicId": "bajarchini/seed/product/mango",
+      "source": "File:Mangos - single and halved.jpg"
+    },
+    "katla-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631610/bajarchini/seed/product/katla-fish.jpg",
+      "publicId": "bajarchini/seed/product/katla-fish",
+      "source": "File:Catla fish displayed for sale at Boiddar Bazar, Sonargaon.jpg"
+    },
+    "mrigel-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631614/bajarchini/seed/product/mrigel-fish.jpg",
+      "publicId": "bajarchini/seed/product/mrigel-fish",
+      "source": "File:Cirrhinus cirrhosus from the Nandu River.jpg"
+    },
+    "sonali-chicken": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631620/bajarchini/seed/product/sonali-chicken.jpg",
+      "publicId": "bajarchini/seed/product/sonali-chicken",
+      "source": "File:GD 廣東 Guangdong 東莞 Dongguan 清華路 QingHua Road market December 2024 R12S 12.jpg"
+    },
+    "beef": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631624/bajarchini/seed/product/beef.jpg",
+      "publicId": "bajarchini/seed/product/beef",
+      "source": "File:Raw Beef at Barkin Dogo Market 04.jpg"
+    },
+    "boneless-beef": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631628/bajarchini/seed/product/boneless-beef.jpg",
+      "publicId": "bajarchini/seed/product/boneless-beef",
+      "source": "File:Standing-rib-roast.jpg"
+    },
+    "brinjal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631633/bajarchini/seed/product/brinjal.jpg",
+      "publicId": "bajarchini/seed/product/brinjal",
+      "source": "File:Solanum melongena 24 08 2012 (1).JPG"
+    },
+    "cabbage": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631638/bajarchini/seed/product/cabbage.jpg",
+      "publicId": "bajarchini/seed/product/cabbage",
+      "source": "File:Brassica oleracea 2011 G1.jpg"
+    },
+    "bitter-gourd": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631644/bajarchini/seed/product/bitter-gourd.jpg",
+      "publicId": "bajarchini/seed/product/bitter-gourd",
+      "source": "File:Bitter Gourd ကြက်ဟင်းခါးသီး.jpg"
+    },
+    "green-papaya": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631649/bajarchini/seed/product/green-papaya.jpg",
+      "publicId": "bajarchini/seed/product/green-papaya",
+      "source": "File:Papaya fruits in India.jpg"
+    },
+    "green-banana": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631654/bajarchini/seed/product/green-banana.jpg",
+      "publicId": "bajarchini/seed/product/green-banana",
+      "source": "File:Bananas. Costa Rica.jpg"
+    },
+    "drumstick": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631659/bajarchini/seed/product/drumstick.jpg",
+      "publicId": "bajarchini/seed/product/drumstick",
+      "source": "File:Moringa oleifera drumstick pods.JPG"
+    },
+    "taro-stolon": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631664/bajarchini/seed/product/taro-stolon.jpg",
+      "publicId": "bajarchini/seed/product/taro-stolon",
+      "source": "File:Taro stolons of Bangladesh.jpg"
+    },
+    "lal-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631670/bajarchini/seed/product/lal-shak.jpg",
+      "publicId": "bajarchini/seed/product/lal-shak",
+      "source": "File:Amaranthus cruentus 2022-07-18 7359.jpg"
+    },
+    "kolmi-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631675/bajarchini/seed/product/kolmi-shak.jpg",
+      "publicId": "bajarchini/seed/product/kolmi-shak",
+      "source": "File:N Ipoa D1600.JPG"
+    },
+    "lau-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631680/bajarchini/seed/product/lau-shak.jpg",
+      "publicId": "bajarchini/seed/product/lau-shak",
+      "source": "File:Starr-110209-0841-Lagenaria siceraria-flower and leaves-Resort Management Group Nursery Kihei-Maui (24447907643).jpg"
+    },
+    "data-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631686/bajarchini/seed/product/data-shak.jpg",
+      "publicId": "bajarchini/seed/product/data-shak",
+      "source": "File:Efo Tete (Amaranthus Hybridus).jpg"
+    },
+    "kochu-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631690/bajarchini/seed/product/kochu-shak.jpg",
+      "publicId": "bajarchini/seed/product/kochu-shak",
+      "source": "File:Taro leaf underside, backlit by sun - edit.jpg"
+    },
+    "sorisha-shak": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631696/bajarchini/seed/product/sorisha-shak.jpg",
+      "publicId": "bajarchini/seed/product/sorisha-shak",
+      "source": "File:Starr-150403-1408-Brassica juncea-leaves-Southeast Eastern Island-Midway Atoll (24982012140).jpg"
+    },
+    "coriander-leaves": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631701/bajarchini/seed/product/coriander-leaves.jpg",
+      "publicId": "bajarchini/seed/product/coriander-leaves",
+      "source": "File:A scene of Coriander leaves.JPG"
+    },
+    "sagor-kola": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631705/bajarchini/seed/product/sagor-kola.jpg",
+      "publicId": "bajarchini/seed/product/sagor-kola",
+      "source": "File:Bunch of bananas on sale.jpg"
+    },
+    "pineapple": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631710/bajarchini/seed/product/pineapple.jpg",
+      "publicId": "bajarchini/seed/product/pineapple",
+      "source": "File:AnanasComosusOnPlant.jpg"
+    },
+    "watermelon": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631715/bajarchini/seed/product/watermelon.jpg",
+      "publicId": "bajarchini/seed/product/watermelon",
+      "source": "File:البطيخ الأحمر.JPG"
+    },
+    "guava": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631719/bajarchini/seed/product/guava.jpg",
+      "publicId": "bajarchini/seed/product/guava",
+      "source": "File:Guava ID.jpg"
+    },
+    "malta": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631724/bajarchini/seed/product/malta.jpg",
+      "publicId": "bajarchini/seed/product/malta",
+      "source": "File:Stack of green malta citrus fruits at Sadarghat market Dhaka.jpg"
+    },
+    "papaya": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631729/bajarchini/seed/product/papaya.jpg",
+      "publicId": "bajarchini/seed/product/papaya",
+      "source": "File:Papaya cut half.jpg"
+    },
+    "jackfruit": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631734/bajarchini/seed/product/jackfruit.jpg",
+      "publicId": "bajarchini/seed/product/jackfruit",
+      "source": "File:Jackfruit tree with fruit.jpg"
+    },
+    "litchi": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631738/bajarchini/seed/product/litchi.jpg",
+      "publicId": "bajarchini/seed/product/litchi",
+      "source": "File:Lychee fruit.jpg"
+    },
+    "green-coconut": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631744/bajarchini/seed/product/green-coconut.jpg",
+      "publicId": "bajarchini/seed/product/green-coconut",
+      "source": "File:Green Coconuts in Kolkata, West Bengal, India.jpg"
+    },
+    "coconut": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631750/bajarchini/seed/product/coconut.jpg",
+      "publicId": "bajarchini/seed/product/coconut",
+      "source": "File:Coconut husk.jpg"
+    },
+    "apple": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631755/bajarchini/seed/product/apple.jpg",
+      "publicId": "bajarchini/seed/product/apple",
+      "source": "File:Australian Red delicious apples at the store.jpg"
+    },
+    "orange": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631759/bajarchini/seed/product/orange.jpg",
+      "publicId": "bajarchini/seed/product/orange",
+      "source": "File:Mandarin Oranges (Citrus Reticulata).jpg"
+    },
+    "pomegranate": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631763/bajarchini/seed/product/pomegranate.jpg",
+      "publicId": "bajarchini/seed/product/pomegranate",
+      "source": "File:Pomegranate fruit - whole and piece with arils.jpg"
+    },
+    "dates": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631768/bajarchini/seed/product/dates.jpg",
+      "publicId": "bajarchini/seed/product/dates",
+      "source": "File:Pile of Wet Dates at Barkin Dogo Market, Kaduna North.jpg"
+    },
+    "jujube": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631773/bajarchini/seed/product/jujube.jpg",
+      "publicId": "bajarchini/seed/product/jujube",
+      "source": "File:Ziziphus mauritiana (5523007856).jpg"
+    },
+    "hog-plum": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631964/bajarchini/seed/product/hog-plum.jpg",
+      "publicId": "bajarchini/seed/product/hog-plum",
+      "source": "File:Spondias dulcis, June plum 2.jpg"
+    },
+    "black-plum": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631969/bajarchini/seed/product/black-plum.jpg",
+      "publicId": "bajarchini/seed/product/black-plum",
+      "source": "File:Syzygium cumini (black plum).jpg"
+    },
+    "wood-apple": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631974/bajarchini/seed/product/wood-apple.jpg",
+      "publicId": "bajarchini/seed/product/wood-apple",
+      "source": "File:Aegle marmelos 2.jpg"
+    },
+    "sapodilla": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631980/bajarchini/seed/product/sapodilla.jpg",
+      "publicId": "bajarchini/seed/product/sapodilla",
+      "source": "File:Manilkara Zapota in HK.JPG"
+    },
+    "custard-apple": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631984/bajarchini/seed/product/custard-apple.jpg",
+      "publicId": "bajarchini/seed/product/custard-apple",
+      "source": "File:Sugar apple with cross section.jpg"
+    },
+    "star-fruit": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631988/bajarchini/seed/product/star-fruit.jpg",
+      "publicId": "bajarchini/seed/product/star-fruit",
+      "source": "File:Carambola Starfruit.jpg"
+    },
+    "olive": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631992/bajarchini/seed/product/olive.jpg",
+      "publicId": "bajarchini/seed/product/olive",
+      "source": "File:CeylonOliveVeralu.jpg"
+    },
+    "burmese-grape": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631998/bajarchini/seed/product/burmese-grape.jpg",
+      "publicId": "bajarchini/seed/product/burmese-grape",
+      "source": "File:Baccaurea ramiflora, Burmese Grape.jpg"
+    },
+    "pomelo": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632002/bajarchini/seed/product/pomelo.jpg",
+      "publicId": "bajarchini/seed/product/pomelo",
+      "source": "File:Pomelo fruit.jpg"
+    },
+    "palm-fruit": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632008/bajarchini/seed/product/palm-fruit.jpg",
+      "publicId": "bajarchini/seed/product/palm-fruit",
+      "source": "File:Borassus flabellifer fruit 01.jpg"
+    },
+    "dragon-fruit": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632012/bajarchini/seed/product/dragon-fruit.jpg",
+      "publicId": "bajarchini/seed/product/dragon-fruit",
+      "source": "File:Dragon Fruit 01.jpg"
+    },
+    "pear": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632017/bajarchini/seed/product/pear.jpg",
+      "publicId": "bajarchini/seed/product/pear",
+      "source": "File:Pyrus pyrifolia.jpg"
+    },
+    "strawberry": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632022/bajarchini/seed/product/strawberry.jpg",
+      "publicId": "bajarchini/seed/product/strawberry",
+      "source": "File:Still life with strawberries in a crystal bowl.jpg"
+    },
+    "amloki": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632027/bajarchini/seed/product/amloki.jpg",
+      "publicId": "bajarchini/seed/product/amloki",
+      "source": "File:Phyllanthus emblica fruit 02.jpg"
+    },
+    "sabri-banana": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632032/bajarchini/seed/product/sabri-banana.jpg",
+      "publicId": "bajarchini/seed/product/sabri-banana",
+      "source": "File:Small banana.jpg"
+    },
+    "kiwi": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632037/bajarchini/seed/product/kiwi.jpg",
+      "publicId": "bajarchini/seed/product/kiwi",
+      "source": "File:Kiwi (Actinidia chinensis) 1 Luc Viatour.jpg"
+    },
+    "onion": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632043/bajarchini/seed/product/onion.jpg",
+      "publicId": "bajarchini/seed/product/onion",
+      "source": "File:Red Onions.jpg"
+    },
+    "garlic": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632048/bajarchini/seed/product/garlic.jpg",
+      "publicId": "bajarchini/seed/product/garlic",
+      "source": "File:Garlic bulbs of Salem.jpg"
+    },
+    "green-chili": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632053/bajarchini/seed/product/green-chili.jpg",
+      "publicId": "bajarchini/seed/product/green-chili",
+      "source": "File:Green chillies variety.jpg"
+    },
+    "dried-red-chili": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632059/bajarchini/seed/product/dried-red-chili.jpg",
+      "publicId": "bajarchini/seed/product/dried-red-chili",
+      "source": "File:Dried red chillies in Jaipur.jpg"
+    },
+    "cumin": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632065/bajarchini/seed/product/cumin.jpg",
+      "publicId": "bajarchini/seed/product/cumin",
+      "source": "File:Seeds of Cumin.jpg"
+    },
+    "cardamom": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632070/bajarchini/seed/product/cardamom.jpg",
+      "publicId": "bajarchini/seed/product/cardamom",
+      "source": "File:Cardamom pods - Green BNC.jpg"
+    },
+    "cinnamon": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632074/bajarchini/seed/product/cinnamon.jpg",
+      "publicId": "bajarchini/seed/product/cinnamon",
+      "source": "File:Cinnamomum verum spices.jpg"
+    },
+    "bay-leaf": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632078/bajarchini/seed/product/bay-leaf.jpg",
+      "publicId": "bajarchini/seed/product/bay-leaf",
+      "source": "File:Indian bay leaf - tejpatta - indisches Lorbeerblatt.jpg"
+    },
+    "black-pepper": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632083/bajarchini/seed/product/black-pepper.jpg",
+      "publicId": "bajarchini/seed/product/black-pepper",
+      "source": "File:Black Peppercorns (4422070187).jpg"
+    },
+    "coriander-seed": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632088/bajarchini/seed/product/coriander-seed.jpg",
+      "publicId": "bajarchini/seed/product/coriander-seed",
+      "source": "File:Coriander Seeds.jpg"
+    },
+    "cloves": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632093/bajarchini/seed/product/cloves.jpg",
+      "publicId": "bajarchini/seed/product/cloves",
+      "source": "File:2023 Goździki.jpg"
+    },
+    "fenugreek": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632098/bajarchini/seed/product/fenugreek.jpg",
+      "publicId": "bajarchini/seed/product/fenugreek",
+      "source": "File:Fenugreek seeds(মেথি).JPG"
+    },
+    "miniket-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632394/bajarchini/seed/product/miniket-rice.jpg",
+      "publicId": "bajarchini/seed/product/miniket-rice",
+      "source": "File:WhiteRice.jpg"
+    },
+    "masoor-dal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632582/bajarchini/seed/product/masoor-dal.jpg",
+      "publicId": "bajarchini/seed/product/masoor-dal",
+      "source": "File:Split Red Lentil.jpg"
+    },
+    "mung-dal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632586/bajarchini/seed/product/mung-dal.jpg",
+      "publicId": "bajarchini/seed/product/mung-dal",
+      "source": "File:Mung beans (Vigna radiata).jpg"
+    },
+    "chickpea": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632591/bajarchini/seed/product/chickpea.jpg",
+      "publicId": "bajarchini/seed/product/chickpea",
+      "source": "File:Ordinary chickpeas in a ceramic bowl.jpg"
+    },
+    "chinigura-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632780/bajarchini/seed/product/chinigura-rice.jpg",
+      "publicId": "bajarchini/seed/product/chinigura-rice",
+      "source": "File:Chinigura - চিনিগুড়া - Paddy - DSC00613.jpg"
+    },
+    "brri28-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632786/bajarchini/seed/product/brri28-rice.jpg",
+      "publicId": "bajarchini/seed/product/brri28-rice",
+      "source": "File:Toledo Market Traditional Rice Stall.jpg"
+    },
+    "mashkalai-dal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794632974/bajarchini/seed/product/mashkalai-dal.jpg",
+      "publicId": "bajarchini/seed/product/mashkalai-dal",
+      "source": "File:Black gram.jpg"
+    },
+    "flattened-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633163/bajarchini/seed/product/flattened-rice.jpg",
+      "publicId": "bajarchini/seed/product/flattened-rice",
+      "source": "File:Flattened Rice (Poha) (49684434042).jpg"
+    },
+    "puffed-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633168/bajarchini/seed/product/puffed-rice.jpg",
+      "publicId": "bajarchini/seed/product/puffed-rice",
+      "source": "File:Chana Muri.jpg"
+    },
+    "farm-egg": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633173/bajarchini/seed/product/farm-egg.jpg",
+      "publicId": "bajarchini/seed/product/farm-egg",
+      "source": "File:Brown eggs in a deviled egg plate.jpg"
+    },
+    "deshi-egg": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633178/bajarchini/seed/product/deshi-egg.jpg",
+      "publicId": "bajarchini/seed/product/deshi-egg",
+      "source": "File:Chicken eggs white colour.jpg"
+    },
+    "duck-egg": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633183/bajarchini/seed/product/duck-egg.jpg",
+      "publicId": "bajarchini/seed/product/duck-egg",
+      "source": "File:Dendrocygna arcuata MHNT.ZOO.2010.11.34.5.jpg"
+    },
+    "peanut": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633189/bajarchini/seed/product/peanut.jpg",
+      "publicId": "bajarchini/seed/product/peanut",
+      "source": "File:Roasted Peanuts with shell.jpg"
+    },
+    "loitta-shutki": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633378/bajarchini/seed/product/loitta-shutki.jpg",
+      "publicId": "bajarchini/seed/product/loitta-shutki",
+      "source": "File:Harpadon nehereus - Bombay Ducks - drying (seafood).jpg"
+    },
+    "churi-shutki": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633384/bajarchini/seed/product/churi-shutki.jpg",
+      "publicId": "bajarchini/seed/product/churi-shutki",
+      "source": "File:Fish drying at Nazirartek.jpg"
+    },
+    "chingri-shutki": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633388/bajarchini/seed/product/chingri-shutki.jpg",
+      "publicId": "bajarchini/seed/product/chingri-shutki",
+      "source": "File:Dried river shrimp.JPG"
+    },
+    "chepa-shutki": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633394/bajarchini/seed/product/chepa-shutki.jpg",
+      "publicId": "bajarchini/seed/product/chepa-shutki",
+      "source": "File:Dried salty fish 01.jpg"
+    },
+    "tok-doi": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633398/bajarchini/seed/product/tok-doi.jpg",
+      "publicId": "bajarchini/seed/product/tok-doi",
+      "source": "File:Mishti Doi.jpg"
+    },
+    "ghee": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633586/bajarchini/seed/product/ghee.jpg",
+      "publicId": "bajarchini/seed/product/ghee",
+      "source": "File:Pure Ghee-Homemade-Maharashtra.jpg"
+    },
+    "soybean-oil": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633590/bajarchini/seed/product/soybean-oil.jpg",
+      "publicId": "bajarchini/seed/product/soybean-oil",
+      "source": "File:Soybean Oil (10059657806).jpg"
+    },
+    "mustard-oil": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633595/bajarchini/seed/product/mustard-oil.jpg",
+      "publicId": "bajarchini/seed/product/mustard-oil",
+      "source": "File:Mustard Oil & Seeds - Kolkata 2003-10-31 00537.JPG"
+    },
+    "palm-oil": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794633600/bajarchini/seed/product/palm-oil.jpg",
+      "publicId": "bajarchini/seed/product/palm-oil",
+      "source": "File:PALM OIL BOTTLES.jpg"
+    },
+    "atta": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635976/bajarchini/seed/product/atta.jpg",
+      "publicId": "bajarchini/seed/product/atta",
+      "source": "File:Whole wheat grain flour being scooped.jpg"
+    },
+    "maida": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635980/bajarchini/seed/product/maida.jpg",
+      "publicId": "bajarchini/seed/product/maida",
+      "source": "File:All-Purpose Flour (4107895947).jpg"
+    },
+    "suji": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635984/bajarchini/seed/product/suji.jpg",
+      "publicId": "bajarchini/seed/product/suji",
+      "source": "File:Sa semolina far.jpg"
+    },
+    "sugar": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635988/bajarchini/seed/product/sugar.jpg",
+      "publicId": "bajarchini/seed/product/sugar",
+      "source": "File:Sugar 2xmacro.jpg"
+    },
+    "jaggery": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635993/bajarchini/seed/product/jaggery.jpg",
+      "publicId": "bajarchini/seed/product/jaggery",
+      "source": "File:Jaggery cubes.jpg"
+    },
+    "iodized-salt": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794635997/bajarchini/seed/product/iodized-salt.jpg",
+      "publicId": "bajarchini/seed/product/iodized-salt",
+      "source": "File:Table salt with salt shaker V1.jpg"
+    },
+    "deshi-chicken": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636004/bajarchini/seed/product/deshi-chicken.jpg",
+      "publicId": "bajarchini/seed/product/deshi-chicken",
+      "source": "File:Chickens (249627979).jpeg"
+    },
+    "flat-bean": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636010/bajarchini/seed/product/flat-bean.jpg",
+      "publicId": "bajarchini/seed/product/flat-bean",
+      "source": "File:Starr-121108-0712-Lablab purpureus-seeds and pods-Pali o Waipio-Maui (25077705302).jpg"
+    },
+    "grapes": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636066/bajarchini/seed/product/grapes.jpg",
+      "publicId": "bajarchini/seed/product/grapes",
+      "source": "File:Wine grapes03.jpg"
+    },
+    "ginger": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636072/bajarchini/seed/product/ginger.jpg",
+      "publicId": "bajarchini/seed/product/ginger",
+      "source": "File:Ginger rhizomes.jpg"
+    },
+    "turmeric": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636078/bajarchini/seed/product/turmeric.jpg",
+      "publicId": "bajarchini/seed/product/turmeric",
+      "source": "File:Zingiberales - Curcuma longa - 2.jpg"
+    },
+    "cow-milk": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636082/bajarchini/seed/product/cow-milk.jpg",
+      "publicId": "bajarchini/seed/product/cow-milk",
+      "source": "File:Glass of Milk (33657535532).jpg"
+    },
+    "chhana": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636087/bajarchini/seed/product/chhana.jpg",
+      "publicId": "bajarchini/seed/product/chhana",
+      "source": "File:Panir Paneer Indian cheese fresh.jpg"
+    },
+    "nazirshail-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794636826/bajarchini/seed/product/nazirshail-rice.jpg",
+      "publicId": "bajarchini/seed/product/nazirshail-rice",
+      "source": "File:White rice on a brown table.jpg"
+    },
+    "lemon": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637902/bajarchini/seed/product/lemon.jpg",
+      "publicId": "bajarchini/seed/product/lemon",
+      "source": "File:Limes (Citrus aurantifolia) in Thailand.jpg"
+    },
+    "nigella": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637908/bajarchini/seed/product/nigella.jpg",
+      "publicId": "bajarchini/seed/product/nigella",
+      "source": "File:Black cumin seed.png"
+    },
+    "coarse-rice": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637912/bajarchini/seed/product/coarse-rice.jpg",
+      "publicId": "bajarchini/seed/product/coarse-rice",
+      "source": "File:Riso parboiled.jpg"
+    },
+    "anchor-dal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637916/bajarchini/seed/product/anchor-dal.jpg",
+      "publicId": "bajarchini/seed/product/anchor-dal",
+      "source": "File:Split pea.jpg"
+    },
+    "khesari-dal": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637921/bajarchini/seed/product/khesari-dal.jpg",
+      "publicId": "bajarchini/seed/product/khesari-dal",
+      "source": "File:Lathyrus sativus seeds.JPG"
+    },
+    "honey": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637925/bajarchini/seed/product/honey.jpg",
+      "publicId": "bajarchini/seed/product/honey",
+      "source": "File:Jar and honey stick.jpg"
+    },
+    "mishti-doi": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637931/bajarchini/seed/product/mishti-doi.jpg",
+      "publicId": "bajarchini/seed/product/mishti-doi",
+      "source": "File:Mishti doi 01.png"
+    },
+    "rice-bran-oil": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637936/bajarchini/seed/product/rice-bran-oil.jpg",
+      "publicId": "bajarchini/seed/product/rice-bran-oil",
+      "source": "File:Dune Aura Rice Bran oil bottle.jpg"
+    }
+  },
+  "categories": {
+    "fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609585/bajarchini/seed/category/fish.jpg",
+      "publicId": "bajarchini/seed/category/fish",
+      "source": "File:Tenualosa ilisha (ইলিশ), taken from Chandpur Fish Market (1).jpg"
+    },
+    "chicken": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609586/bajarchini/seed/category/chicken.jpg",
+      "publicId": "bajarchini/seed/category/chicken",
+      "source": "File:Raw leg chicken quarters.jpg"
+    },
+    "beef": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609588/bajarchini/seed/category/beef.jpg",
+      "publicId": "bajarchini/seed/category/beef",
+      "source": "File:Raw Beef at Barkin Dogo Market 03.jpg"
+    },
+    "mutton": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609589/bajarchini/seed/category/mutton.png",
+      "publicId": "bajarchini/seed/category/mutton",
+      "source": "File:Raw meat.png"
+    },
+    "vegetables": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609591/bajarchini/seed/category/vegetables.jpg",
+      "publicId": "bajarchini/seed/category/vegetables",
+      "source": "File:Vegetable seller in a market of Khulna.jpg"
+    },
+    "leafy-greens": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794609592/bajarchini/seed/category/leafy-greens.jpg",
+      "publicId": "bajarchini/seed/category/leafy-greens",
+      "source": "File:LeafyVegetables.JPG"
+    },
+    "fruits": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794630526/bajarchini/seed/category/fruits.jpg",
+      "publicId": "bajarchini/seed/category/fruits",
+      "source": "File:Vegetable Vendor (27971264363).jpg"
+    },
+    "spices": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794630531/bajarchini/seed/category/spices.jpg",
+      "publicId": "bajarchini/seed/category/spices",
+      "source": "File:Jerusalem shouk (433836720).jpg"
+    },
+    "dry-fish": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794630538/bajarchini/seed/category/dry-fish.jpg",
+      "publicId": "bajarchini/seed/category/dry-fish",
+      "source": "File:Dried fish in Chittagong 02.jpg"
+    },
+    "others": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631294/bajarchini/seed/category/others.jpg",
+      "publicId": "bajarchini/seed/category/others",
+      "source": "File:Chicken eggs in tray.jpg"
+    },
+    "pulses-grains": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631594/bajarchini/seed/category/pulses-grains.jpg",
+      "publicId": "bajarchini/seed/category/pulses-grains",
+      "source": "File:3 types of lentil.jpg"
+    },
+    "edible-oil": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631600/bajarchini/seed/category/edible-oil.jpg",
+      "publicId": "bajarchini/seed/category/edible-oil",
+      "source": "File:Cooking oil tanks at 唐揚げ shop.jpg"
+    },
+    "flour-sugar-salt": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794631604/bajarchini/seed/category/flour-sugar-salt.jpg",
+      "publicId": "bajarchini/seed/category/flour-sugar-salt",
+      "source": "File:Atta flour.jpg"
+    },
+    "dairy": {
+      "url": "https://res.cloudinary.com/dawnjp24z/image/upload/v1794637897/bajarchini/seed/category/dairy.jpg",
+      "publicId": "bajarchini/seed/category/dairy",
+      "source": "File:Різні види молочних продуктів українського виробництва.jpg"
+    }
+  }
+}

@@ -20,9 +20,25 @@ import { AdminUser } from '../../lib/models/AdminUser'
 import { normalizeSearch } from '../../lib/utils'
 import { UNITS } from '../../lib/units'
 import { CATEGORIES } from './categories'
-import { PRODUCTS, type SeedProduct } from './products'
+import { PRODUCTS as BASE_PRODUCTS, type SeedProduct } from './products'
+import { MORE_PRODUCTS_1 } from './products-more-1'
+import { MORE_PRODUCTS_2 } from './products-more-2'
+import { MORE_PRODUCTS_3 } from './products-more-3'
+import IMAGES from './images.json'
 import { CHECKLISTS, type Pair } from './checklists'
 import { ARTICLES } from './articles'
+
+const PRODUCTS: SeedProduct[] = [
+  ...BASE_PRODUCTS,
+  ...MORE_PRODUCTS_1,
+  ...MORE_PRODUCTS_2,
+  ...MORE_PRODUCTS_3,
+]
+
+/** Verified images uploaded to Cloudinary (scripts/seed/upload-images.py), keyed by slug. */
+type SeedImage = { url: string; publicId: string }
+const PRODUCT_IMAGES = IMAGES.products as Record<string, SeedImage>
+const CATEGORY_IMAGES = IMAGES.categories as Record<string, SeedImage>
 
 config({ path: '.env.local' })
 config()
@@ -187,7 +203,8 @@ async function main() {
       name: c.name,
       slug: c.slug,
       description: c.description,
-      image: c.image,
+      image: CATEGORY_IMAGES[c.slug]?.url ?? c.image,
+      cloudinaryPublicId: CATEGORY_IMAGES[c.slug]?.publicId ?? '',
       icon: c.icon,
       displayOrder: i + 1,
       isActive: true,
@@ -227,7 +244,11 @@ async function main() {
         categoryId: catBySlug.get(p.category)!._id,
         shortDescription: { bn: p.short[0], en: p.short[1] },
         description: { bn: p.desc[0], en: p.desc[1] },
-        images: p.image ? [{ url: p.image, publicId: '', alt: name }] : [],
+        images: PRODUCT_IMAGES[p.slug]
+          ? [{ ...PRODUCT_IMAGES[p.slug], alt: name }]
+          : p.image
+            ? [{ url: p.image, publicId: '', alt: name }]
+            : [],
         identificationGuide: { bn: p.ident[0], en: p.ident[1] },
         goodQualitySigns: list([...(p.good ?? []), ...checklist.good]),
         warningSigns: list([...(p.warn ?? []), ...checklist.warn]),

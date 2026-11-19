@@ -92,6 +92,46 @@ export const CATEGORIES = [
     image: U('1515543904379-3d757afe72e4'),
   },
   {
+    slug: 'dry-fish',
+    icon: 'fish',
+    name: { bn: 'শুঁটকি মাছ', en: 'Dried fish' },
+    description: {
+      bn: 'লইট্টা, ছুরি, চিংড়ি ও চ্যাপা শুঁটকি — কীটনাশকমুক্ত ভালো শুঁটকি চেনার উপায় ও দাম।',
+      en: 'Loitta, ribbonfish, shrimp and chepa shutki — how to spot clean, pesticide-free dried fish, plus prices.',
+    },
+    image: '',
+  },
+  {
+    slug: 'dairy',
+    icon: 'other',
+    name: { bn: 'দুধ ও দুগ্ধজাত', en: 'Milk & dairy' },
+    description: {
+      bn: 'গরুর দুধ, টক দই, ঘি ও ছানা — ভেজাল দুধ ও ঘি চেনার সহজ পরীক্ষা।',
+      en: 'Cow milk, yogurt, ghee and chhana — simple checks for watered-down milk and fake ghee.',
+    },
+    image: '',
+  },
+  {
+    slug: 'edible-oil',
+    icon: 'other',
+    name: { bn: 'ভোজ্য তেল', en: 'Cooking oil' },
+    description: {
+      bn: 'সয়াবিন, সরিষা ও পাম তেল — খোলা বনাম বোতলজাত, ভেজাল তেল চেনা ও লিটারপ্রতি দাম।',
+      en: 'Soybean, mustard and palm oil — loose vs bottled, spotting adulterated oil, and price per litre.',
+    },
+    image: '',
+  },
+  {
+    slug: 'flour-sugar-salt',
+    icon: 'grain',
+    name: { bn: 'আটা, চিনি ও লবণ', en: 'Flour, sugar & salt' },
+    description: {
+      bn: 'আটা, ময়দা, চিনি ও আয়োডিনযুক্ত লবণ — প্রতিদিনের মুদি পণ্যের মান যাচাই।',
+      en: 'Atta, maida, sugar and iodised salt — checking the quality of everyday grocery staples.',
+    },
+    image: '',
+  },
+  {
     slug: 'others',
     icon: 'other',
     name: { bn: 'অন্যান্য', en: 'Others' },
